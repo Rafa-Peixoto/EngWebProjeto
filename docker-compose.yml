@@ -1,0 +1,15 @@
+
+version: '3.8'
+services:
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+  mongo-seed:
+    image: mongo:latest
+    volumes:
+      - C:\university\3ano\EngenhariaWeb\Projeto\ucs.json:/datasets/dataset1.json
+      - C:\university\3ano\EngenhariaWeb\Projeto\users.json:/datasets/dataset2.json
+    command: >
+      /bin/bash -c "mongoimport --host mongodb -d GestaoUcs -c ucs --type json --file /datasets/dataset1.json --jsonArray && 
+      mongoimport --host mongodb -d GestaoUcs -c users --type json --file /datasets/dataset2.json --jsonArray"
