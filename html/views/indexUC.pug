@@ -1,0 +1,28 @@
+extends layout
+
+block content
+  h1.w3-container.w3-teal #{title}
+
+  if ucs.length > 0
+    .w3-responsive
+      table.w3-table-all.w3-card-4
+        thead
+          tr
+            th ID
+            th Título
+            th Docentes
+            th Datas de Avaliação
+            th Total de Aulas
+        tbody
+          each uc in ucs
+            tr.w3-hover-shadow
+              td
+                a(href=`/${uc._id}`).w3-text-blue= uc._id
+              td= uc.titulo
+              td= uc.docentes.join(', ')
+              td
+                | Teste: #{uc.datas.teste}, Exame: #{uc.datas.exame}, Projeto: #{uc.datas.projeto}
+              td= uc.aulas.length
+  else
+    .w3-container
+      p.w3-text-grey Não há UCs disponíveis.

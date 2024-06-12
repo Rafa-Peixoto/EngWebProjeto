@@ -271,23 +271,7 @@
     {
         "sigla": "ENGWEB2024",
         "titulo": "Engenharia Web",
-        "docentes": [
-            {
-                "nome": "José Carlos Ramalho",
-                "foto": "jcr-keep.jpeg",
-                "categoria": "Professor/Investigador/Empresário",
-                "filiacao": "Dep. Informática - Universidade do Minho",
-                "email": "jcr@di.uminho.pt",
-                "webpage": "http://www.di.uminho.pt/~jcr"
-            },
-            {
-                "nome": "Tiago Manuel Queirós Barata",
-                "foto": "tiago.jpg",
-                "categoria": "Professor Convidado",
-                "filiacao": "Dep. Informática - Universidade do Minho",
-                "email": "d13753@di.uminho.pt"
-            }
-        ],
+        "docentes": [ "José Carlos Ramalho", "Tiago Manuel Queirós Barata"],
         "horario": {
             "teoricas": [
                 "segunda das 14h às 16h, sala Ed.2 - 0.05"
@@ -447,16 +431,7 @@
     {
         "sigla": "RPCW2024",
         "titulo": "Representação e Processamento de Conhecimento na Web",
-        "docentes": [
-            {
-                "nome": "José Carlos Ramalho",
-                "foto": "jcr-keep.jpeg",
-                "categoria": "Professor/Investigador/Empresário",
-                "filiacao": "Dep. Informática - Universidade do Minho",
-                "email": "jcr@di.uminho.pt",
-                "webpage": "http://www.di.uminho.pt/~jcr"
-            }
-        ],
+        "docentes": ["José Carlos Ramalho"],
         "horario": {
             "teoricas": [
                 "terça das 16h às 17h, sala Ed.1 - 1.25"
