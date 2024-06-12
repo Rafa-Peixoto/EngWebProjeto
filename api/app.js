@@ -3,15 +3,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/uc');
+var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var ucsRouter = require('./routes/ucs');
 
 var app = express();
-
 var mongoose = require("mongoose");
 
 var mongoDB = "mongodb://127.0.0.1/GestaoUcs";
-mongoose.connect(mongoDB);
+mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "Erro de conexão ao MongoDB"));
 db.once("open", () => {
@@ -26,5 +26,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/ucs', ucsRouter);
 
 module.exports = app;
