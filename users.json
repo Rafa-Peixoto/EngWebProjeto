@@ -1,30 +1,30 @@
 {
-    "docentes": [
-            {
-                "nome": "José Carlos Ramalho",
-                "username": "jcr",
-                "foto": "jcr-keep.jpeg",
-                "categoria": "Professor/Investigador/Empresário",
-                "filiacao": "Dep. Informática - Universidade do Minho",
-                "email": "jcr@di.uminho.pt",
-                "webpage": "http://www.di.uminho.pt/~jcr"
-            },
-            {
-                "nome": "Luís Filipe Cunha",
-                "username": "lfc",
-                "foto": "lfc-di.jpeg",
-                "categoria": "Professor Convidado",
-                "filiacao": "Dep. Informática - Universidade do Minho",
-                "email": "lfc@di.uminho.pt",
-                "webpage": ""
-            },
-            {
-                "nome": "Tiago Manuel Queirós Barata",
-                "username": "tmob",
-                "foto": "tiago.jpg",
-                "categoria": "Professor Convidado",
-                "filiacao": "Dep. Informática - Universidade do Minho",
-                "email": "d13753@di.uminho.pt"
-            }
-        ]
+  "docentes": [
+    {
+      "nome": "Luís Filipe Cunha",
+      "username": "lfc",
+      "foto": "lfc-di.jpeg",
+      "categoria": "Professor Convidado",
+      "filiacao": "Dep. Informática - Universidade do Minho",
+      "email": "lfc@di.uminho.pt",
+      "webpage": ""
+    },
+    {
+      "nome": "Tiago Manuel Queirós Barata",
+      "username": "tmob",
+      "foto": "tiago.jpg",
+      "categoria": "Professor Convidado",
+      "filiacao": "Dep. Informática - Universidade do Minho",
+      "email": "d13753@di.uminho.pt"
+    },
+    {
+      "nome": "Novo Docente",
+      "username": "novo",
+      "foto": "novo.jpg",
+      "categoria": "Professor",
+      "filiacao": "Dep. Informática - Universidade do Minho",
+      "email": "novo@di.uminho.pt",
+      "webpage": "http://www.di.uminho.pt/~novo"
+    }
+  ]
 }
