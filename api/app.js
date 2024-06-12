@@ -2,14 +2,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-<<<<<<< HEAD
-var indexRouter = require('./routes/index');
-=======
 
-var indexRouter = require('./routes/uc');
->>>>>>> 406d253caf2f53185321a8080ff688d64fc1e5a6
+var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var ucsRouter = require('./routes/ucs');
+
 var app = express();
 var mongoose = require("mongoose");
 
