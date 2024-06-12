@@ -8,11 +8,19 @@ const aulaSchema = new mongoose.Schema({
 
 const ucSchema = new mongoose.Schema({
   _id: String,
+  sigla: String,
   titulo: String,
   docentes:[String],
-  horario:{teorica:[String],pratica:[String]},
+  horario:{
+    teoricas:[String],
+    praticas:[String],
+  },
   avaliacao:[String],
-  datas:{teste:String, exame:String, projeto: String},
+  datas:{
+    teste:String,
+    exame:String, 
+    projeto: String
+  },
   aulas:[aulaSchema],
 }, { versionKey: false });
 
