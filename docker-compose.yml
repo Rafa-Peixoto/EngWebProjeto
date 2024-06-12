@@ -1,4 +1,3 @@
-
 version: '3.8'
 services:
   mongodb:
@@ -11,5 +10,6 @@ services:
       - C:\university\3ano\EngenhariaWeb\Projeto\ucs.json:/datasets/dataset1.json
       - C:\university\3ano\EngenhariaWeb\Projeto\users.json:/datasets/dataset2.json
     command: >
-      /bin/bash -c "mongoimport --host mongodb -d GestaoUcs -c ucs --type json --file /datasets/dataset1.json --jsonArray && 
-      mongoimport --host mongodb -d GestaoUcs -c users --type json --file /datasets/dataset2.json --jsonArray"
+      /bin/bash -c "mongoimport --host mongodb -d GestaoUcs -c ucs --type json --file /datasets/dataset1.json --jsonArray &&
+                   mongoimport --host mongodb -d GestaoUcs -c users --type json --file /datasets/dataset2.json --jsonArray;
+                   tail -f /dev/null"

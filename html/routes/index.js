@@ -1,9 +1,14 @@
 var express = require('express');
 var router = express.Router();
+var axios = require('axios');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('/', (req, res) => {
+  axios.get('http://localhost:4200/')
+      .then(dados => res.render('indexUC', { ucs: dados.data, title: 'Lista de UCs' }))
+      .catch(erro => {
+          console.log('Erro ao carregar UCs: ' + erro);
+          res.render('error', { error: erro });
+      });
 });
 
 module.exports = router;
