@@ -1,69 +1,69 @@
 var express = require('express');
 var router = express.Router();
 
-const docenteController = require('../controllers/user');
+const userController = require('../controllers/user');
 
-// Listar todos os docentes
+// Listar todos os usuários
 router.get('/', (req, res) => {
-    docenteController.list()
+    userController.list()
     .then(dados => res.status(200).json(dados))
     .catch(erro => res.status(500).send(erro));
 });
-
-// Obter docente por ID
+  
+// Obter usuário por ID
 router.get('/:id', (req, res) => {
-    docenteController.findById(req.params.id)
+    userController.findById(req.params.id)
     .then(dado => {
         if (dado) {
             res.status(200).json(dado);
         } else {
-            res.status(404).send('Docente não encontrado');
+            res.status(404).send('Usuário não encontrado');
         }
     })
     .catch(erro => res.status(500).send(erro));
 });
 
-// Obter docente por username
+// Obter usuário por username
 router.get('/username/:username', (req, res) => {
-    docenteController.findByUsername(req.params.username)
+    userController.findByUsername(req.params.username)
     .then(dado => {
         if (dado) {
             res.status(200).json(dado);
         } else {
-            res.status(404).send('Docente não encontrado');
+            res.status(404).send('Usuário não encontrado');
         }
     })
     .catch(erro => res.status(500).send(erro));
 });
 
-// Adicionar novo docente
+// Adicionar novo usuário
 router.post('/', (req, res) => {
-    docenteController.insert(req.body)
+    userController.insert(req.body)
     .then(dado => res.status(201).json(dado))
     .catch(erro => res.status(500).send(erro));
 });
 
-// Deletar docente por ID
+// Deletar usuário por ID
 router.delete('/:id', (req, res) => {
-    docenteController.removeById(req.params.id)
+    userController.removeById(req.params.id)
     .then(resultado => {
         if (resultado.deletedCount > 0) {
             res.status(204).send();
         } else {
-            res.status(404).send('Docente não encontrado para deletar');
+            res.status(404).send('Usuário não encontrado para deletar');
         }
     })
     .catch(erro => res.status(500).send(erro));
 });
 
-// Atualizar docente por ID
+// Atualizar usuário por ID
 router.put('/:id', (req, res) => {
-    docenteController.update(req.params.id, req.body)
+    userController.update(req.params.id, req.body)
     .then(resultado => {
         if (resultado) {
-            res.status(200).json({message: "Docente atualizado com sucesso"});
+            res.status(200).json({ message: "Usuário atualizado com sucesso" });
         } else {
-            res.status(404).send('Docente não encontrado para atualizar');
+            res.status(404).send('Usuário não encontrado para atualizar');
         }
     })
     .catch(erro => res.status(500).send(erro));

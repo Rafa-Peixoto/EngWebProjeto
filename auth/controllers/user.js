@@ -1,31 +1,31 @@
-const Docente = require('../models/user');
+const User = require('../models/user');
 
+// Listar todos os usuários
 module.exports.list = async () => {
-  return await Docente
-    .find()
-    .exec();
-}
+  return await User.find().exec();
+};
 
+// Encontrar usuário por ID
 module.exports.findById = id => {
-  return Docente
-    .findById(id)
-    .exec();
+  return User.findById(id).exec();
 }
 
+// Encontrar usuário por username
 module.exports.findByUsername = username => {
-  return Docente
-    .findOne({ username: username })
-    .exec();
+  return User.findOne({ username: username }).exec();
 }
 
-module.exports.insert = docente => {
-  return Docente.create(docente);
+// Inserir novo usuário
+module.exports.insert = user => {
+  return User.create(user);
 }
 
+// Remover usuário por ID
 module.exports.removeById = id => {
-  return Docente.deleteOne({ _id: id });
+  return User.deleteOne({ _id: id });
 }
 
-module.exports.update = (id, docenteData) => {
-  return Docente.findByIdAndUpdate(id, docenteData, { new: true });
+// Atualizar usuário por ID
+module.exports.update = (id, userData) => {
+  return User.findByIdAndUpdate(id, userData, { new: true });
 }
