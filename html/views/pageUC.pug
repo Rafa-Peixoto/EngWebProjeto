@@ -4,17 +4,22 @@ block content
         h1
           span uc.titulo
 
+    //- para o caso de querer mostrar as informações em tabela
     //- br
     //- .w3-container
     //-     table.w3-table-all
     //-       tr
-    //-         th NIPC da Entidade
-    //-         th Nome da Entidade
-    //-         th Total de preços contratuais
+    //-         th Sigla
+    //-         th Docentes
+    //-         th Horário
+    //-         th Avaliação
+    //-         th Datas
     //-           tr
-    //-             td= contratos[0].NIPC_entidade_comunicante
-    //-             td= contratos[0].entidade_comunicante
-    //-             td= somatorio
+    //-             td= uc.sigla
+    //-             td= uc.docentes
+    //-             td= uc.horario
+    //-             td= uc.avaliacao
+    //-             td= uc.datas
 
     br
     .w3-container
@@ -34,8 +39,6 @@ block content
                 li
                     b Datas: 
                     span= uc.datas
-                
-
     
     br
     .w3-container
