@@ -1,0 +1,62 @@
+block content
+  .w3-card-4
+    header.w3-container.w3-teal
+        h1
+          span uc.titulo
+
+    //- br
+    //- .w3-container
+    //-     table.w3-table-all
+    //-       tr
+    //-         th NIPC da Entidade
+    //-         th Nome da Entidade
+    //-         th Total de preços contratuais
+    //-           tr
+    //-             td= contratos[0].NIPC_entidade_comunicante
+    //-             td= contratos[0].entidade_comunicante
+    //-             td= somatorio
+
+    br
+    .w3-container
+            ul.w3-ul.w3-card-4(style="width:100%")
+                li
+                    b Sigla: 
+                    span= uc.sigla
+                li
+                    b Docentes: 
+                    span= uc.docentes
+                li
+                    b Horário: 
+                    span= uc.horario
+                li 
+                    b Avaliação: 
+                    span= uc.avaliacao
+                li
+                    b Datas: 
+                    span= uc.datas
+                
+
+    
+    br
+    .w3-container
+        h2 Aulas
+        table.w3-table-all
+          tr
+            th Tipo
+            th Data
+            th Sumário
+            
+            each aula in uc.aulas
+                tr
+                    //- td 
+                    //-     a(href="/" + contrato._id)= contrato._id
+                    td= aula.tipo
+                    td= aula.data
+                    td= aula.sumario
+
+    br
+    footer.w3-container.w3-blue 
+            h5 
+                span Gerado por Team in #{data} - [
+                    a(href="/")  Voltar
+                span  ] 
