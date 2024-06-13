@@ -6,11 +6,10 @@ var logger = require('morgan');
 var indexRouter = require('./routes/uc');
 
 var app = express();
-
 var mongoose = require("mongoose");
 
 var mongoDB = "mongodb://127.0.0.1/GestaoUcs";
-mongoose.connect(mongoDB);
+mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "Erro de conexão ao MongoDB"));
 db.once("open", () => {
