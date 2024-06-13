@@ -1,28 +1,30 @@
 extends layout
 
 block content
-  h1.w3-container.w3-teal #{title}
+  h1 Lista de UCs
+  .search-bar
+    input(type="text" placeholder="Pesquisar nos seus cursos" id="searchInput" onkeyup="searchUCs()")
+  .container#ucContainer
+    each uc in ucs
+      .uc-card
+        h2 #{uc.titulo}
+        p #{uc.docentes.join(', ')}
+        a(href=`/ucs/${uc._id}`) Mais informações
 
-  if ucs.length > 0
-    .w3-responsive
-      table.w3-table-all.w3-card-4
-        thead
-          tr
-            th ID
-            th Título
-            th Docentes
-            th Datas de Avaliação
-            th Total de Aulas
-        tbody
-          each uc in ucs
-            tr.w3-hover-shadow
-              td
-                a(href=`/${uc._id}`).w3-text-blue= uc._id
-              td= uc.titulo
-              td= uc.docentes.join(', ')
-              td
-                | Teste: #{uc.datas.teste}, Exame: #{uc.datas.exame}, Projeto: #{uc.datas.projeto}
-              td= uc.aulas.length
-  else
-    .w3-container
-      p.w3-text-grey Não há UCs disponíveis.
+  script.
+    function searchUCs() {
+      var input, filter, container, cards, h2, i, txtValue;
+      input = document.getElementById('searchInput');
+      filter = input.value.toUpperCase();
+      container = document.getElementById("ucContainer");
+      cards = container.getElementsByClassName('uc-card');
+      for (i = 0; i < cards.length; i++) {
+        h2 = cards[i].getElementsByTagName("h2")[0];
+        txtValue = h2.textContent || h2.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          cards[i].style.display = "";
+        } else {
+          cards[i].style.display = "none";
+        }
+      }
+    }

@@ -1,0 +1,7 @@
+extends layout
+
+block content
+  h1 #{uc.titulo}
+  p Docentes: #{uc.docentes.join(', ')}
+  p Avaliação: Testes: #{uc.datas.teste}, Exame: #{uc.datas.exame}, Projeto: #{uc.datas.projeto}
+  p Número total de aulas: #{uc.aulas.length}

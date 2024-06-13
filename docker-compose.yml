@@ -7,9 +7,8 @@ services:
   mongo-seed:
     image: mongo:latest
     volumes:
-      - ~/Desktop/LEI(3ANO2SEM)/Projeto EngWEB/EngWebProjeto/datasets/dataset1.json:/datasets/dataset1.json
-      - ~/Desktop/LEI(3ANO2SEM)/Projeto EngWEB/EngWebProjeto/datasets/dataset2.json:/datasets/dataset2.json
-
+      - /home/mateus/Desktop/LEI(3ANO2SEM)/Projeto EngWEB/EngWebProjeto/ucs.json:/datasets/dataset1.json
+      - /home/mateus/Desktop/LEI(3ANO2SEM)/Projeto EngWEB/EngWebProjeto/users.json:/datasets/dataset2.json
     command: >
       /bin/bash -c "mongoimport --host mongodb -d GestaoUcs -c ucs --type json --file /datasets/dataset1.json --jsonArray &&
                    mongoimport --host mongodb -d GestaoUcs -c users --type json --file /datasets/dataset2.json --jsonArray;
