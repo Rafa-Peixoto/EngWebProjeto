@@ -1,15 +1,18 @@
 extends layout
 
 block content
+  .top-bar
+    a.create-button(href='/criar') Criar Nova UC
+
   h1 Lista de UCs
   .search-bar
-    input(type="text" placeholder="Pesquisar nos seus cursos" id="searchInput" onkeyup="searchUCs()" style="width: 50%")
+    input(type="text" placeholder="Pesquisar nos seus cursos" id="searchInput" onkeyup="searchUCs()")
   .container#ucContainer
     each uc in ucs
       .uc-card
         h2 #{uc.titulo}
-        p #{uc.docentes.join(', ')}
-        a(href=`/${uc._id}`) Mais informações
+        p Docentes: #{uc.docentes.join(', ')}
+        a(href=`/ucs/${uc._id}`) Mais informações
 
   script.
     function searchUCs() {

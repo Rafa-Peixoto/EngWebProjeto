@@ -1,7 +1,35 @@
 extends layout
 
 block content
-  h1 #{uc.titulo}
-  p Docentes: #{uc.docentes.join(', ')}
-  p Avaliação: Testes: #{uc.datas.teste}, Exame: #{uc.datas.exame}, Projeto: #{uc.datas.projeto}
-  p Número total de aulas: #{uc.aulas.length}
+  .details-container
+    h2= uc.titulo
+    p Docentes: #{uc.docentes.join(', ')}
+    if uc.horarios
+      h3 Horário
+      ul
+        each horario in uc.horarios
+          li= horario
+    if uc.avaliacao
+      h3 Avaliação
+      ul
+        each avaliacao in uc.avaliacao
+          li= avaliacao
+    if uc.datas
+      h3 Datas
+      ul
+        each data in uc.datas
+          li= data
+    if uc.aulas
+      h3 Aulas
+      ul
+        each aula in uc.aulas
+          li
+            strong Tipo: #{aula.tipo}, Data: #{aula.data}
+            if aula.itens
+              ul
+                each item in aula.itens
+                  li= item
+    .buttons
+      a.button-edit(href=`/ucs/${uc.sigla}/editar`) Editar UC
+      form(action=`/ucs/${uc.sigla}?_method=DELETE`, method="POST")
+        button.button-delete(type="submit") Eliminar UC
