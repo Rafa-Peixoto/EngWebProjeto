@@ -1,30 +1,37 @@
-{
-  "docentes": [
-          {
-              "nome": "José Carlos Ramalho",
-              "username": "jcr",
-              "foto": "jcr-keep.jpeg",
-              "categoria": "Professor/Investigador/Empresário",
-              "filiacao": "Dep. Informática - Universidade do Minho",
-              "email": "jcr@di.uminho.pt",
-              "webpage": "http://www.di.uminho.pt/~jcr"
-          },
-          {
-              "nome": "Luís Filipe Cunha",
-              "username": "lfc",
-              "foto": "lfc-di.jpeg",
-              "categoria": "Professor Convidado",
-              "filiacao": "Dep. Informática - Universidade do Minho",
-              "email": "lfc@di.uminho.pt",
-              "webpage": ""
-          },
-          {
-              "nome": "Tiago Manuel Queirós Barata",
-              "username": "tmob",
-              "foto": "tiago.jpg",
-              "categoria": "Professor Convidado",
-              "filiacao": "Dep. Informática - Universidade do Minho",
-              "email": "d13753@di.uminho.pt"
-          }
-      ]
-}
+[
+    {
+        "nome": "José Carlos Ramalho",
+        "_id": "jcr",
+        "username": "jcr",  
+        "password": "senhaSegura123",
+        "foto": "jcr-keep.jpeg",
+        "categoria": "Professor/Investigador/Empresário",
+        "filiacao": "Dep. Informática - Universidade do Minho",
+        "email": "jcr@di.uminho.pt",
+        "webpage": "http://www.di.uminho.pt/~jcr",
+        "level": 3
+    },
+    {
+        "nome": "Luís Filipe Cunha",
+        "_id": "lfc",
+        "username": "lfc",  
+        "password": "outraSenhaSegura456",
+        "foto": "lfc-di.jpeg",
+        "categoria": "Professor Convidado",
+        "filiacao": "Dep. Informática - Universidade do Minho",
+        "email": "lfc@di.uminho.pt",
+        "webpage": "",
+        "level": 2
+    },
+    {
+        "nome": "Tiago Manuel Queirós Barata",
+        "_id": "tmob",
+        "username": "tmob", 
+        "password": "senhaForte789",
+        "foto": "tiago.jpg",
+        "categoria": "Professor Convidado",
+        "filiacao": "Dep. Informática - Universidade do Minho",
+        "email": "d13753@di.uminho.pt",
+        "level": 2  
+    }
+]
