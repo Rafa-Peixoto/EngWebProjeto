@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  .profile-container
+    .profile-card
+      img(src=docente.foto, alt='Foto do Docente')
+      .profile-info
+        h2= docente.nome
+        p Categoria: #{docente.categoria}
+        p Filiação: #{docente.filiacao}
+        p Email: 
+          a(href=`mailto:${docente.email}`)= docente.email
+        if docente.webpage
+          p
+            | Webpage: 
+            a(href=docente.webpage)= docente.webpage

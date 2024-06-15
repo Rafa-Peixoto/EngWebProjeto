@@ -1,0 +1,17 @@
+extends paginaUC
+
+block innerContent
+
+    h2 Aulas
+    .aulas-container
+      each aula in uc.aulas
+        .aula-card
+          h3 Tipo: #{aula.tipo}, Data: #{aula.data}
+          p Sumário: #{aula.sumario}
+          if aula.links && aula.links.length > 0
+            .aula-links
+              p Links:
+              ul
+                each link in aula.links
+                  li: a(href=link.url, target="_blank")= link.text
+

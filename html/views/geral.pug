@@ -1,0 +1,18 @@
+extends paginaUC
+
+block innerContent
+  h2 Docentes: 
+  p #{uc.docentes.join(', ')}
+  h3 Avaliação:
+  p #{uc.avaliacao}
+  h3 Datas:
+  .aulas-container
+    .aula-card
+      h3 Teste
+      p= uc.datas.teste || '???'
+    .aula-card
+      h3 Exame
+      p= uc.datas.exame || '???'
+    .aula-card
+      h3 Projeto
+      p= uc.datas.projeto || '???'
