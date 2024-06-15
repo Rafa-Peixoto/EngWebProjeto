@@ -7,7 +7,7 @@ const aulaSchema = new mongoose.Schema({
     { _id: false });
 
 const ucSchema = new mongoose.Schema({
-  _id: String,
+  _id: {type: mongoose.Types.ObjectId},
   sigla: String,
   titulo: String,
   docentes:[String],

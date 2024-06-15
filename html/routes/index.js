@@ -4,8 +4,9 @@ var axios = require('axios');
 var authMiddleware = require('../../auth/middlewares/auth');
 
 // Rota principal para listar todas as UCs
-router.get('/', authMiddleware.verificaAcesso, (req, res) => {
-  axios.get('http://localhost:4200/ucs', { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
+router.get('/ucs', authMiddleware.verificaAcesso, (req, res) => {
+  console.log('Aqui Cookies:', req.cookies);
+  axios.get('http://localhost:4200/', { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
     .then(dados => res.render('indexUC', { ucs: dados.data, title: 'Lista de UCs' }))
     .catch(erro => {
       console.log('Erro ao carregar UCs: ' + erro);

@@ -4,8 +4,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const session = require('express-session');
-const passport = require('../auth/config/passport');
+var cors = require('cors');
 
 var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
@@ -20,6 +19,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+const corsOptions = {
+  origin: 'http://localhost:4201',  // URL da interface
+  credentials: true,
+  allowedHeaders: ['Authorization', 'Content-Type']
+};
+app.use(cors(corsOptions));
+
 
 app.use('/', indexRouter);
 app.use('/welcome', authRouter);

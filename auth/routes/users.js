@@ -13,7 +13,7 @@ router.post('/register', (req, res) => {
       console.error('Erro ao registrar usuário:', err);
       return res.status(500).json({ error: err.message });
     }
-    passport.authenticate('local')(req, res, () => {
+    passport.authenticate('local', { session: false })(req, res, () => {
       const token = jwt.sign({ username: user.username }, SECRET_KEY, { expiresIn: '1h' });
       res.status(201).json({ token: token });
     });

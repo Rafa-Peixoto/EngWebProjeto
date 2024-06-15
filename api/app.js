@@ -4,12 +4,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require("mongoose");
-var session = require('express-session');
-var jwt = require('jsonwebtoken')
+var cors = require('cors');
 
-var ucsRouter = require('./routes/ucs');
 
-var app = express();
+
 
 var mongoDB = "mongodb://127.0.0.1/GestaoUcs";
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -17,7 +15,16 @@ var db = mongoose.connection;
 db.on("error", console.error.bind(console, "Erro de conexão ao MongoDB"));
 db.once("open", () => {
   console.log("Conexão ao MongoDB realizada com sucesso");
-});
+  });
+
+var app = express();
+
+const corsOptions = {
+  origin: 'http://localhost:4201',  // URL da interface
+  credentials: true,
+  allowedHeaders: ['Authorization', 'Content-Type']
+};
+app.use(cors(corsOptions));
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -25,31 +32,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(function(req, res, next){
-  var myToken 
-  if(req.query && req.query.token)
-    myToken = req.query.token
-  else if(req.body && req.body.token) 
-    myToken = req.body.token
-  else
-    myToken = false
-  
-    if(myToken){
-      jwt.verify(myToken, "EngWeb2024", function(e, payload){
-        if(e){
-          res.status(401).jsonp({error: e})
-        }
-        else{
-          next()
-        }
-      })
-    }
-    else{
-      res.status(401).jsonp({error: "Token inexistente!"})
-    }
-})
-
-
+var ucsRouter = require('./routes/ucs');  
 app.use('/', ucsRouter);
 
 // catch 404 and forward to error handler

@@ -24,7 +24,7 @@ router.post('/register', async (req, res) => {
     const response = await axios.post(`${AUTH_SERVER}/register`, req.body);
     // Definir cookie com o token JWT recebido, se necessário
     res.cookie('token', response.data.token, { httpOnly: true });
-    res.redirect('/welcome');  // Ou qualquer outra rota que você deseje redirecionar após o registro
+    res.redirect('/welcome/login');  // Ou qualquer outra rota que você deseje redirecionar após o registro
   } catch (error) {
     console.error('Erro ao registrar usuário:', error);
     res.render('register', { error: error.response.data.error, title: 'Register' });
@@ -36,8 +36,8 @@ router.post('/login', async (req, res) => {
   try {
     const response = await axios.post(`${AUTH_SERVER}/login`, req.body);
     // Definir cookie com o token JWT
-    res.cookie('token', response.data.token, { httpAndSecure: true, httpOnly: true });
-    res.redirect('/');  // Direcionar para a página principal após login
+    res.cookie('token', response.data.token, { httpOnly: true });
+    res.redirect('/ucs');  // Direcionar para a página principal após login
   } catch (error) {
     console.error('Erro ao fazer login:', error);
     res.render('login', { error: error.response.data.error, title: 'Login' });
