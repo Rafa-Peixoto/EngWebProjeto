@@ -4,9 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require("mongoose");
+var session = require('express-session');
+var jwt = require('jsonwebtoken')
 
-var indexRouter = require('./routes/uc');
-var indexRouter = require('./routes/index');
 var ucsRouter = require('./routes/ucs');
 
 var app = express();
@@ -25,8 +25,32 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/ucs', ucsRouter);
+app.use(function(req, res, next){
+  var myToken 
+  if(req.query && req.query.token)
+    myToken = req.query.token
+  else if(req.body && req.body.token) 
+    myToken = req.body.token
+  else
+    myToken = false
+  
+    if(myToken){
+      jwt.verify(myToken, "EngWeb2024", function(e, payload){
+        if(e){
+          res.status(401).jsonp({error: e})
+        }
+        else{
+          next()
+        }
+      })
+    }
+    else{
+      res.status(401).jsonp({error: "Token inexistente!"})
+    }
+})
+
+
+app.use('/', ucsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,31 +1,27 @@
 const User = require('../models/user');
 
-// Listar todos os usuários
-module.exports.list = async () => {
-  return await User.find().exec();
+module.exports = {
+  list: async () => {
+    return await User.find().exec();
+  },
+
+  findById: (id) => {
+    return User.findById(id).exec();
+  },
+
+  findByUsername: (username) => {
+    return User.findOne({ username: username }).exec();
+  },
+
+  removeById: (id) => {
+    return User.deleteOne({ _id: id }).exec();
+  },
+
+  update: async (id, userData) => {
+    if (userData.password) {
+      const salt = await bcrypt.genSalt(10);
+      userData.password = await bcrypt.hash(userData.password, salt);
+    }
+    return User.findByIdAndUpdate(id, userData, { new: true }).exec();
+  }
 };
-
-// Encontrar usuário por ID
-module.exports.findById = id => {
-  return User.findById(id).exec();
-}
-
-// Encontrar usuário por username
-module.exports.findByUsername = username => {
-  return User.findOne({ username: username }).exec();
-}
-
-// Inserir novo usuário
-module.exports.insert = user => {
-  return User.create(user);
-}
-
-// Remover usuário por ID
-module.exports.removeById = id => {
-  return User.deleteOne({ _id: id });
-}
-
-// Atualizar usuário por ID
-module.exports.update = (id, userData) => {
-  return User.findByIdAndUpdate(id, userData, { new: true });
-}
