@@ -9,17 +9,22 @@ var users = require(path.join(__dirname, '../../users.json'));
 // Rota principal para listar todas as UCs
 router.get('/', (req, res) => {
   axios.get('http://localhost:4200/ucs')
-    .then(dados => res.render('indexUC', { ucs: dados.data, title: 'Lista de UCs' }))
+    .then(dados => {
+      const uniqueUcs = Array.from(new Map(dados.data.map(uc => [uc.sigla, uc])).values());
+      res.render('indexUC', { uniqueUcs: uniqueUcs, title: 'Lista de UCs' });
+    })
     .catch(erro => {
       console.log('Erro ao carregar UCs: ' + erro);
       res.render('error', { error: erro });
     });
 });
 
-// Rota para uma UC específica
+// Rota para a página geral de uma UC específica
 router.get('/ucs/:sigla', (req, res) => {
   axios.get(`http://localhost:4200/ucs/${req.params.sigla}`)
-    .then(dados => res.render('paginaUC', { uc: dados.data, title: dados.data.titulo }))
+    .then(dados => {
+      res.render('geral', { uc: dados.data, title: dados.data.titulo });
+    })
     .catch(erro => {
       console.log('Erro ao carregar a UC: ' + erro);
       res.render('error', { error: erro });
@@ -31,16 +36,37 @@ router.get('/criar', (req, res) => {
   res.render('criarUC', { title: 'Criar Nova UC' });
 });
 
-// Rota para criar uma nova UC
+
+// Rota POST para criar uma nova UC
 router.post('/ucs', (req, res) => {
-  axios.post('http://localhost:4200/ucs', req.body)
-    .then(() => res.redirect('/'))
+  const newUC = {
+    sigla: req.body.sigla,
+    titulo: req.body.titulo,
+    docentes: req.body.docentes.split(',').map(docente => docente.trim()),
+    horario: {
+      teoricas: req.body.teoricas.split(',').map(teorica => teorica.trim()),
+      praticas: req.body.praticas.split(',').map(pratica => pratica.trim())
+    },
+    avaliacao: req.body.avaliacao.split(',').map(avaliacao => avaliacao.trim()),
+    datas: {
+      teste: req.body.dataTeste,
+      exame: req.body.dataExame,
+      projeto: req.body.dataProjeto
+    }
+  };
+
+  console.log('Tentando criar nova UC:', newUC);
+
+  axios.post('http://localhost:4200/ucs', newUC)
+    .then(() => {
+      console.log('UC criada com sucesso');
+      res.redirect('/');
+    })
     .catch(erro => {
-      console.log('Erro ao criar a UC: ' + erro);
-      res.render('error', { error: erro });
+      console.error('Erro ao criar a UC:', erro.response ? erro.response.data : erro.message);
+      res.render('error', { error: erro.response ? erro.response.data : erro.message });
     });
 });
-
 // Rota para editar uma UC específica
 router.put('/ucs/:id', (req, res) => {
   axios.put(`http://localhost:4200/ucs/${req.params.id}`, req.body)
@@ -129,7 +155,15 @@ router.get('/ucs/:sigla/eliminar-aula/:aulaId', (req, res) => {
 
 // Rota para editar UC
 router.get('/ucs/:sigla/editar-uc', (req, res) => {
-  res.render('editarUC', { title: 'Editar UC' });
+  axios.get(`http://localhost:4200/ucs/${req.params.sigla}`)
+    .then(response => {
+      const uc = response.data;
+      res.render('editarUC', { title: 'Editar UC', uc: uc });
+    })
+    .catch(erro => {
+      console.log('Erro ao recuperar dados da UC: ' + erro);
+      res.render('error', { error: erro });
+    });
 });
 
 // Rota para apagar UC

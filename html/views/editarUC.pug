@@ -1,25 +1,36 @@
-extends layout
+extends paginaUC
 
-block content
+block innerContent
+
   .form-container
     h1 Editar UC
     form(action=`/ucs/${uc._id}?_method=PUT` method="post")
-      label(for="sigla") Sigla:
-      input(type="text" id="sigla" name="sigla" value=uc.sigla required)
-      label(for="titulo") Título:
-      input(type="text" id="titulo" name="titulo" value=uc.titulo required)
-      label(for="docentes") Docentes:
-      input(type="text" id="docentes" name="docentes" value=uc.docentes.join(', ') required placeholder="Separados por vírgula")
-      label(for="teoricas") Aulas Teóricas:
-      input(type="text" id="teoricas" name="teoricas" value=uc.horario.teoricas.join(', ') required placeholder="Separadas por vírgula")
-      label(for="praticas") Aulas Práticas:
-      input(type="text" id="praticas" name="praticas" value=uc.horario.praticas.join(', ') required placeholder="Separadas por vírgula")
-      label(for="avaliacao") Avaliação:
-      input(type="text" id="avaliacao" name="avaliacao" value=uc.avaliacao.join(', ') required placeholder="Separada por vírgula")
-      label(for="dataTeste") Data do Teste:
-      input(type="text" id="dataTeste" name="dataTeste" value=uc.datas.teste)
-      label(for="dataExame") Data do Exame:
-      input(type="text" id="dataExame" name="dataExame" value=uc.datas.exame)
-      label(for="dataProjeto") Data do Projeto:
-      input(type="text" id="dataProjeto" name="dataProjeto" value=uc.datas.projeto)
-      button(type="submit") Atualizar UC
+      .form-group
+        label(for="sigla") Sigla:
+        input.form-control(type="text" id="sigla" name="sigla" value=uc.sigla required)
+      .form-group
+        label(for="titulo") Título:
+        input.form-control(type="text" id="titulo" name="titulo" value=uc.titulo required)
+      .form-group
+        label(for="docentes") Docentes:
+        textarea.form-control(id="docentes" name="docentes" required)= uc.docentes.join(', ')
+      .form-group
+        label(for="teoricas") Aulas Teóricas:
+        textarea.form-control(id="teoricas" name="teoricas" required)= uc.horario.teoricas.join(', ')
+      .form-group
+        label(for="praticas") Aulas Práticas:
+        textarea.form-control(id="praticas" name="praticas" required)= uc.horario.praticas.join(', ')
+      .form-group
+        label(for="avaliacao") Avaliação:
+        textarea.form-control(id="avaliacao" name="avaliacao" required)= uc.avaliacao.join(', ')
+      .form-group
+        label(for="dataTeste") Data do Teste:
+        input.form-control(type="date" id="dataTeste" name="dataTeste" value=uc.datas.teste)
+      .form-group
+        label(for="dataExame") Data do Exame:
+        input.form-control(type="date" id="dataExame" name="dataExame" value=uc.datas.exame)
+      .form-group
+        label(for="dataProjeto") Data do Projeto:
+        input.form-control(type="date" id="dataProjeto" name="dataProjeto" value=uc.datas.projeto)
+      button.btn.btn-primary(type="submit") Atualizar UC
+

@@ -1,40 +1,17 @@
 extends layout
 
 block content
-  .sub-nav
-    .nav-title= title
-
-  .side-nav
-    ul
-      li
-        a(href=`/ucs/${aula.sigla}/geral`) Geral
-      li
-        a(href=`/ucs/${aula.sigla}/aulas`) Aulas
-      li
-        a(href=`/ucs/${aula.sigla}/conteudo`) Conteúdo
-      li
-        a(href=`/ucs/${aula.sigla}/criar-aula`) Criar Aula
-      li
-        a(href=`/ucs/${aula.sigla}/editar-aula/${aula._id}`) Editar Aula
-      li
-        a(href=`/ucs/${aula.sigla}/eliminar-aula`) Eliminar Aula
-      li
-        a(href=`/ucs/${aula.sigla}/editar-uc`) Editar UC
-      li
-        a(href=`/ucs/${aula.sigla}/apagar-uc`) Apagar UC
-
-  .form-container
-    h1 Editar Aula
-    form(method='POST', action=`/ucs/${aula.sigla}/editar-aula/${aula._id}`)
-      .form-group
-        label(for='tipo') Tipo:
-        select.form-control(name='tipo')
-          option(value='T' selected=aula.tipo === 'T') Aula Teórica
-          option(value='P' selected=aula.tipo === 'P') Aula Prática
-      .form-group
-        label(for='data') Data:
-        input.form-control(type='text', name='data', value=aula.data)
-      .form-group
-        label(for='sumario') Sumário:
-        textarea.form-control(name='sumario')= aula.sumario
-      button.btn.btn-primary(type='submit') Atualizar Aula
+  h1= title
+  form(method='POST', action=`/ucs/${aula.sigla}/editar-aula/${aula._id}?_method=PUT`)
+    .form-group
+      label(for='tipo') Tipo:
+      select.form-control(name='tipo')
+        option(value='T', selected=aula.tipo === 'T') Aula Teórica
+        option(value='P', selected=aula.tipo === 'P') Aula Prática
+    .form-group
+      label(for='data') Data:
+      input.form-control(type='text', name='data', value=aula.data)
+    .form-group
+      label(for='sumario') Sumário:
+      textarea.form-control(name='sumario')= aula.sumario
+    button.btn.btn-primary(type='submit') Atualizar Aula

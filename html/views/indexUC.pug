@@ -3,17 +3,17 @@ extends layout
 block content
   .sub-nav
     input(type="text" placeholder="Pesquisar UCs")
-    a(href="/favoritos") 
+    a(href="/favoritos")
       i.fas.fa-star Favoritos
-    a(href="/criar") 
+    a(href="/criar")
       i.fas.fa-plus Adicionar UC
 
   .container
-    each uc in ucs
+    each uc in uniqueUcs
       .uc-card
         h2= uc.titulo
         p Docentes: #{uc.docentes.join(', ')}
-        a(href=`/ucs/${uc.sigla}/geral`) Mais informações
+        a(href=`/ucs/${uc.sigla}`) Mais informações
 
   script.
     document.addEventListener('DOMContentLoaded', function() {
