@@ -2,15 +2,16 @@
     {
         "nome": "José Carlos Ramalho",
         "_id": "jcr",
-        "username": "jcr",  
+        "username": "jcr",
         "password": "senhaSegura123",
-        "foto": "jcr-keep.jpeg",
+        "foto": "/images/istockphoto-1367537840-612x612.jpg",
         "categoria": "Professor/Investigador/Empresário",
         "filiacao": "Dep. Informática - Universidade do Minho",
         "email": "jcr@di.uminho.pt",
         "webpage": "http://www.di.uminho.pt/~jcr",
         "level": 3
-    },
+    }
+    ,
     {
         "nome": "Luís Filipe Cunha",
         "_id": "lfc",
