@@ -1,72 +1,66 @@
 var express = require('express');
 var router = express.Router();
+var passport = require('passport');
+const User = require('../models/user');
+var jwt = require('jsonwebtoken');
 
-const userController = require('../controllers/user');
+const SECRET_KEY = process.env.SECRET_KEY || 'EngWeb2024';
 
-// Listar todos os usuários
+// Rota de registro de usuário
+router.post('/register', (req, res) => {
+  User.register(new User({ username: req.body.username, email: req.body.email, name: req.body.name }), req.body.password, (err, user) => {
+    if (err) {
+      console.error('Erro ao registrar usuário:', err);
+      return res.status(500).json({ error: err.message });
+    }
+    passport.authenticate('local', { session: false })(req, res, () => {
+      const token = jwt.sign({ username: user.username }, SECRET_KEY, { expiresIn: '1h' });
+      res.status(201).json({ token: token });
+    });
+  });
+});
+
+// Rota de login de usuário
+router.post('/login', passport.authenticate('local', { session: false }), (req, res) => {
+  const token = jwt.sign({ username: req.user.username }, SECRET_KEY, { expiresIn: '1h' });
+  res.status(200).json({ token: token });
+});
+
+// Listar todos os usuários (protegida)
 router.get('/', (req, res) => {
-    userController.list()
-    .then(dados => res.status(200).json(dados))
-    .catch(erro => res.status(500).send(erro));
+  User.find().exec()
+    .then(users => res.status(200).json(users))
+    .catch(err => res.status(500).json({ error: err }));
 });
-  
-// Obter usuário por ID
+
+// Obter usuário por ID (protegida)
 router.get('/:id', (req, res) => {
-    userController.findById(req.params.id)
-    .then(dado => {
-        if (dado) {
-            res.status(200).json(dado);
-        } else {
-            res.status(404).send('Usuário não encontrado');
-        }
+  User.findById(req.params.id).exec()
+    .then(user => {
+      if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
+      res.status(200).json(user);
     })
-    .catch(erro => res.status(500).send(erro));
+    .catch(err => res.status(500).json({ error: err }));
 });
 
-// Obter usuário por username
-router.get('/username/:username', (req, res) => {
-    userController.findByUsername(req.params.username)
-    .then(dado => {
-        if (dado) {
-            res.status(200).json(dado);
-        } else {
-            res.status(404).send('Usuário não encontrado');
-        }
-    })
-    .catch(erro => res.status(500).send(erro));
-});
-
-// Adicionar novo usuário
-router.post('/', (req, res) => {
-    userController.insert(req.body)
-    .then(dado => res.status(201).json(dado))
-    .catch(erro => res.status(500).send(erro));
-});
-
-// Deletar usuário por ID
+// Deletar usuário por ID (protegida)
 router.delete('/:id', (req, res) => {
-    userController.removeById(req.params.id)
-    .then(resultado => {
-        if (resultado.deletedCount > 0) {
-            res.status(204).send();
-        } else {
-            res.status(404).send('Usuário não encontrado para deletar');
-        }
+  User.findByIdAndDelete(req.params.id).exec()
+    .then(result => {
+      if (!result) return res.status(404).json({ error: 'Usuário não encontrado' });
+      res.status(204).send();
     })
-    .catch(erro => res.status(500).send(erro));
+    .catch(err => res.status(500).json({ error: err }));
 });
 
-// Atualizar usuário por ID
+// Atualizar usuário por ID (protegida)
 router.put('/:id', (req, res) => {
-    userController.update(req.params.id, req.body)
-    .then(resultado => {
-        if (resultado) {
-            res.status(200).json({ message: "Usuário atualizado com sucesso" });
-        } else {
-            res.status(404).send('Usuário não encontrado para atualizar');
-        }
+  User.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec()
+    .then(user => {
+      if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
+      res.status(200).json(user);
     })
-    .catch(erro => res.status(500).send(erro));
+    .catch(err => res.status(500).json({ error: err }));
 });
 
 module.exports = router;

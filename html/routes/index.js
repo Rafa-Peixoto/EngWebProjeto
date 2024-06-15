@@ -1,10 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var axios = require('axios');
-var path = require('path');
-
-// Ajuste o caminho para o users.json
-var users = require(path.join(__dirname, '../../users.json'));
+var authMiddleware = require('../../auth/middlewares/auth');
 
 // Rota principal para listar todas as UCs
 router.get('/', (req, res) => {
@@ -13,6 +10,10 @@ router.get('/', (req, res) => {
       const uniqueUcs = Array.from(new Map(dados.data.map(uc => [uc.sigla, uc])).values());
       res.render('indexUC', { uniqueUcs: uniqueUcs, title: 'Lista de UCs' });
     })
+router.get('/ucs', authMiddleware.verificaAcesso, (req, res) => {
+  console.log('Aqui Cookies:', req.cookies);
+  axios.get('http://localhost:4200/', { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
+    .then(dados => res.render('indexUC', { ucs: dados.data, title: 'Lista de UCs' }))
     .catch(erro => {
       console.log('Erro ao carregar UCs: ' + erro);
       res.render('error', { error: erro });
@@ -20,8 +21,8 @@ router.get('/', (req, res) => {
 });
 
 // Rota para a página geral de uma UC específica
-router.get('/ucs/:sigla', (req, res) => {
-  axios.get(`http://localhost:4200/ucs/${req.params.sigla}`)
+router.get('/ucs/:id', authMiddleware.verificaAcesso, (req, res) => {
+  axios.get(`http://localhost:4200/ucs/${req.params.id}`, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
     .then(dados => {
       res.render('geral', { uc: dados.data, title: dados.data.titulo });
     })
@@ -32,13 +33,13 @@ router.get('/ucs/:sigla', (req, res) => {
 });
 
 // Rota para a página de criação de UC
-router.get('/criar', (req, res) => {
+router.get('/criar', authMiddleware.verificaAcesso, (req, res) => {
   res.render('criarUC', { title: 'Criar Nova UC' });
 });
 
 
 // Rota POST para criar uma nova UC
-router.post('/ucs', (req, res) => {
+router.post('/ucs', authMiddleware.verificaAcesso, (req, res) => {
   const newUC = {
     sigla: req.body.sigla,
     titulo: req.body.titulo,
@@ -57,7 +58,7 @@ router.post('/ucs', (req, res) => {
 
   console.log('Tentando criar nova UC:', newUC);
 
-  axios.post('http://localhost:4200/ucs', newUC)
+  axios.post('http://localhost:4200/ucs', newUC, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
     .then(() => {
       console.log('UC criada com sucesso');
       res.redirect('/');
@@ -68,8 +69,8 @@ router.post('/ucs', (req, res) => {
     });
 });
 // Rota para editar uma UC específica
-router.put('/ucs/:id', (req, res) => {
-  axios.put(`http://localhost:4200/ucs/${req.params.id}`, req.body)
+router.put('/ucs/:id', authMiddleware.verificaAcesso, (req, res) => {
+  axios.put(`http://localhost:4200/ucs/${req.params.id}`, req.body, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
     .then(() => res.redirect(`/ucs/${req.params.id}`))
     .catch(erro => {
       console.log('Erro ao editar a UC: ' + erro);
@@ -78,8 +79,8 @@ router.put('/ucs/:id', (req, res) => {
 });
 
 // Rota para deletar uma UC específica
-router.delete('/ucs/:id', (req, res) => {
-  axios.delete(`http://localhost:4200/ucs/${req.params.id}`)
+router.delete('/ucs/:id', authMiddleware.verificaAcesso, (req, res) => {
+  axios.delete(`http://localhost:4200/ucs/${req.params.id}`, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
     .then(() => res.redirect('/'))
     .catch(erro => {
       console.log('Erro ao deletar a UC: ' + erro);

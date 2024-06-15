@@ -1,0 +1,55 @@
+doctype html
+html
+  head
+    title Welcome Page
+    link(rel="stylesheet", href="/stylesheets/style.css")
+    style.
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-image: url('/images/background.jpg');
+        background-size: cover;
+        background-position: center;
+        filter: blur(5px); /* Embaça o fundo */
+      }
+      .container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+      }
+      .container h1 {
+        margin-bottom: 20px;
+      }
+      .container a {
+        text-decoration: none;
+        margin: 10px;
+      }
+      .container button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+      }
+      .container button:hover {
+        background-color: #0056b3;
+      }
+  body
+    .container
+      h1 Welcome to Our Application
+      a(href="/welcome/login")
+        button Login
+      a(href="/welcome/register")
+        button Register
