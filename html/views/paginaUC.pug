@@ -1,35 +1,20 @@
 extends layout
 
 block content
-  .details-container
-    h2= uc.titulo
-    p Docentes: #{uc.docentes.join(', ')}
-    if uc.horarios
-      h3 Horário
-      ul
-        each horario in uc.horarios
-          li= horario
-    if uc.avaliacao
-      h3 Avaliação
-      ul
-        each avaliacao in uc.avaliacao
-          li= avaliacao
-    if uc.datas
-      h3 Datas
-      ul
-        each data in uc.datas
-          li= data
-    if uc.aulas
-      h3 Aulas
-      ul
-        each aula in uc.aulas
-          li
-            strong Tipo: #{aula.tipo}, Data: #{aula.data}
-            if aula.itens
-              ul
-                each item in aula.itens
-                  li= item
-    .buttons
-      a.button-edit(href=`/ucs/${uc.sigla}/editar`) Editar UC
-      form(action=`/ucs/${uc.sigla}?_method=DELETE`, method="POST")
-        button.button-delete(type="submit") Eliminar UC
+  .sub-nav
+    h2 #{uc.titulo}
+  .side-nav
+    ul
+      li: a(href=`/ucs/${uc.sigla}/geral`) Geral
+      li: a(href=`/ucs/${uc.sigla}/aulas`) Aulas
+      li: a(href=`/ucs/${uc.sigla}/conteudo`) Conteúdo
+    // Espaço entre as listas
+    hr
+    ul
+      li: a(href=`/ucs/${uc.sigla}/criar-aula`) Criar Aula
+      li: a(href=`/ucs/${uc.sigla}/editar-aula`) Editar Aula
+      li: a(href=`/ucs/${uc.sigla}/eliminar-aula`) Eliminar Aula
+      li: a(href=`/ucs/${uc.sigla}/editar-uc`) Editar UC
+      li: a(href=`/ucs/${uc.sigla}/apagar-uc`) Apagar UC
+  .uc-info
+    block innerContent

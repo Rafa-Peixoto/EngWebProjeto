@@ -1,34 +1,40 @@
 extends layout
 
 block content
-  .form-container
-    h1 Criar Nova UC
-    form(method='POST', action='/ucs')
-      label(for='sigla') Sigla:
-      input(type='text', id='sigla', name='sigla' required)
+  .container.mt-5
+    .row
+      .col-md-12
+        h1.mb-4.text-left Criar Nova UC
+    .row
+      .col-md-6
+        form(method='POST', action='/ucs')
+          .form-group
+            label(for='sigla') Sigla:
+            input.form-control(type='text', id='sigla', name='sigla' required=true)
 
-      label(for='titulo') Título:
-      input(type='text', id='titulo', name='titulo' required)
+          .form-group
+            label(for='titulo') Título:
+            input.form-control(type='text', id='titulo', name='titulo' required=true)
 
-      label(for='docentes') Docentes:
-      input(type='text', id='docentes', name='docentes' placeholder='Separados por vírgula' required)
+          .form-group
+            label(for='docentes') Docentes:
+            textarea.form-control(id='docentes', name='docentes', placeholder='Separados por vírgula', required=true rows='3')
 
-      label(for='aulasTeoricas') Aulas Teóricas:
-      input(type='text', id='aulasTeoricas', name='aulasTeoricas' placeholder='Separadas por vírgula' required)
+      .col-md-6
+          .form-group
+            label(for='avaliacao') Avaliação:
+            textarea.form-control(id='avaliacao', name='avaliacao', placeholder='Separada por vírgula', required=true rows='3')
 
-      label(for='aulasPraticas') Aulas Práticas:
-      input(type='text', id='aulasPraticas', name='aulasPraticas' placeholder='Separadas por vírgula' required)
+          .form-group
+            label(for='dataTeste') Data do Teste:
+            input.form-control(type='date', id='dataTeste', name='dataTeste', required=true)
 
-      label(for='avaliacao') Avaliação:
-      input(type='text', id='avaliacao', name='avaliacao' placeholder='Separada por vírgula' required)
+          .form-group
+            label(for='dataExame') Data do Exame:
+            input.form-control(type='date', id='dataExame', name='dataExame', required=true)
 
-      label(for='dataTeste') Data do Teste:
-      input(type='text', id='dataTeste', name='dataTeste' required)
+          .form-group
+            label(for='dataProjeto') Data do Projeto:
+            input.form-control(type='date', id='dataProjeto', name='dataProjeto', required=true)
 
-      label(for='dataExame') Data do Exame:
-      input(type='text', id='dataExame', name='dataExame' required)
-
-      label(for='dataProjeto') Data do Projeto:
-      input(type='text', id='dataProjeto', name='dataProjeto' required)
-
-      button(type='submit') Adicionar UC
+          button.btn.btn-primary.btn-block(type='submit') Adicionar UC

@@ -1,74 +1,94 @@
+/* Estilos básicos */
 body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
 }
 
-.top-bar {
+/* Barra de navegação superior e sub-navegação */
+.nav-bar, .sub-nav {
+    padding: 5px 20px;
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 20px;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
 }
 
-.top-bar .create-button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
+.nav-bar {
+    background-color: #4CAF50; /* Verde escuro */
+    top: 0;
+    height: 50px; /* Altura fixa */
+}
+
+.sub-nav {
+    background-color: #36B597; /* Verde claro */
+    top: 50px; /* Alinhado diretamente abaixo da nav-bar sem espaço */
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-title {
     color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    text-decoration: none;
-}
-
-.top-bar .create-button:hover {
-    background-color: #45a049;
-}
-
-h1 {
     font-size: 24px;
-    margin-bottom: 20px;
+    font-weight: bold;
 }
 
-.search-bar {
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: flex-start;
+/* Barra de navegação */
+.nav-bar a, .sub-nav a {
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    transition: color 0.3s;
 }
 
-.search-bar input {
-    width: 300px;
-    padding: 10px;
+.nav-bar a:hover, .sub-nav a:hover {
+    color: #ddd;
+}
+
+/* Ajustes na barra de pesquisa para ter maior destaque */
+.sub-nav input[type="text"] {
+    padding: 5px;
     border: 1px solid #ddd;
     border-radius: 5px;
+    margin-right: 10px;
 }
 
+/* Espaçamento do conteúdo principal para começar abaixo das barras fixas */
+.container, .uc-info, .form-container {
+    margin-top: 120px; /* Aumentado para garantir espaço suficiente para as duas barras */
+}
+
+/* Contêiner para cartões UC */
 .container {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    justify-content: center;
+    padding: 10px 0;
 }
 
+/* Estilização dos cartões UC */
 .uc-card {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 10px;
-    padding: 20px;
+    padding: 15px;
     width: calc(33.333% - 40px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
+    text-align: center;
 }
 
 .uc-card:hover {
     transform: scale(1.05);
 }
 
-.uc-card h2 {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-.uc-card p {
-    font-size: 14px;
-    margin-bottom: 10px;
+.uc-card h2, .uc-card p {
+    margin-bottom: 5px;
 }
 
 .uc-card a {
@@ -81,114 +101,198 @@ h1 {
     text-decoration: underline;
 }
 
-.form-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Rodapé fixo no fundo da página */
+.footer {
+    background-color: #f2f2f2;
+    color: #333;
+    text-align: center;
+    padding: 5px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
 
-.form-container input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+/* Estilos para a barra lateral na página de UC específica */
+.side-nav {
+    position: fixed;
+    top: 100px; /* Ajustado para caber sob as barras de navegação */
+    left: 0;
+    width: 200px;
+    height: calc(100% - 100px); /* Ajuste baseado na altura das barras de navegação */
+    background-color: #36B597;
+    padding: 10px 0;
+    z-index: 999;
 }
 
-.form-container button {
-    width: 100%;
-    padding: 10px;
-    background-color: #4CAF50;
+.side-nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.side-nav li a {
     color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    padding: 10px 20px;
+    display: block;
+    text-decoration: none;
     transition: background-color 0.3s;
 }
 
-.form-container button:hover {
-    background-color: #45a049;
+.side-nav li a:hover {
+    background-color: #2a5440;
 }
 
-.details-container {
+/* Ajustes para o conteúdo da página principal, movido para a direita devido à barra lateral */
+.uc-info {
+    margin-left: 220px; /* Ajuste conforme a largura da sua barra lateral */
+    padding: 20px;
+}
+
+/* Estilos para os cartões de aula */
+.aulas-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.aula-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    width: calc(50% - 40px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.aula-card:hover {
+    transform: scale(1.05);
+}
+
+.aula-card h3 {
+    margin-top: 0;
+}
+
+.aula-links ul {
+    padding-left: 20px;
+    list-style: disc;
+}
+
+.aula-links a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+.aula-links a:hover {
+    text-decoration: underline;
+}
+
+/* Estilo adicional para título centralizado na barra verde clara */
+.sub-nav h2 {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Estilos personalizados para o formulário */
+.form-container {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
+    background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 10px;
-    background-color: #f9f9f9;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 150px; /* Ajuste para dar espaço à barra superior */
 }
 
-.details-container h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
+button {
+    width: 100%;
 }
 
-.details-container p, .details-container li {
-    font-size: 16px;
-    margin-bottom: 10px;
+/* Estilo adicional para o título */
+h1 {
+    font-size: 2rem;
+    color: #4CAF50; /* Cor verde escuro */
+    text-align: left; /* Alinhado à esquerda */
 }
 
-.button-edit {
-    padding: 10px 20px;
-    background-color: #FFC107;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    text-decoration: none;
+/* Espaçamento adicional */
+.form-group {
+    margin-bottom: 1.5rem;
 }
 
-.button-edit:hover {
-    background-color: #FFB300;
+/* Estilo para textarea */
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
 }
 
-.button-delete {
-    padding: 10px 20px;
-    background-color: #F44336;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.button-delete:hover {
-    background-color: #D32F2F;
-}
-
-.buttons {
-    margin-top: 20px;
+/* Estilos para a página de perfil */
+.profile-container {
     display: flex;
-    gap: 10px;
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 100px);
+    margin-top: 60px;
 }
 
-/* Estilo para o botão verde */
-.button-create {
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    text-decoration: none;
-}
-
-.button-create:hover {
-    background-color: #218838;
-}
-
-.search-bar input {
-    width: 300px; /* Ajuste da largura da barra de pesquisa */
-    padding: 10px;
+.profile-card {
+    background-color: #fff;
     border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-card img {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+.profile-info {
+    text-align: center;
+}
+
+.profile-info h2 {
+    margin-bottom: 10px;
+}
+
+.profile-info p {
+    margin: 5px 0;
+}
+
+/* Estilo para remover negrito dos nomes dos docentes */
+.docentes {
+    font-weight: normal;
+}
+
+/* Estilo para os botões na barra lateral */
+.side-nav li a.button {
+    background-color: #36B597; /* Mesma cor que "Geral", "Aulas" e "Conteúdo" */
+    color: white;
+    padding: 10px;
     border-radius: 5px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.side-nav li a.button:hover {
+    background-color: #2a5440;
+}
+
+.side-nav hr {
+    margin: 450px 0;
+    border: 0;
+    border-top: 0px solid #ddd;
 }
