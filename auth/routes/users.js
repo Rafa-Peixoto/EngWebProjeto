@@ -3,6 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 const User = require('../models/user');
 var jwt = require('jsonwebtoken');
+var jwtDecode = require('jwt-decode');
 
 const SECRET_KEY = process.env.SECRET_KEY || 'EngWeb2024';
 

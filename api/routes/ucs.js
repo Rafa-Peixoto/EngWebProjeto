@@ -62,16 +62,11 @@ router.post('/', (req, res) => {
       res.status(500).send('Erro ao criar a UC');
     });
 });
+
 // Deletar UC por ID (sigla aqui é o id)
 router.delete('/:id', (req, res) => {
   ucController.removeById(req.params.id)
-  ucController.removeById(req.params.id)
     .then(resultado => {
-      if (resultado.deletedCount > 0) {
-        res.status(204).send();
-      } else {
-        res.status(404).send('UC não encontrada para deletar');
-      }
       if (resultado.deletedCount > 0) {
         res.status(204).send();
       } else {
@@ -83,7 +78,6 @@ router.delete('/:id', (req, res) => {
 
 // Atualizar UC por ID (sigla aqui é o id)
 router.put('/:id', (req, res) => {
-  ucController.update(req.params.id, req.body)
   ucController.update(req.params.id, req.body)
     .then(resultado => {
       if (resultado.nModified > 0) {

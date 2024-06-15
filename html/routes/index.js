@@ -4,22 +4,17 @@ var axios = require('axios');
 var authMiddleware = require('../../auth/middlewares/auth');
 
 // Rota principal para listar todas as UCs
-router.get('/', (req, res) => {
-  axios.get('http://localhost:4200/ucs')
+router.get('/ucs', authMiddleware.verificaAcesso, (req, res) => {
+  axios.get('http://localhost:4200/ucs', { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
     .then(dados => {
       const uniqueUcs = Array.from(new Map(dados.data.map(uc => [uc.sigla, uc])).values());
       res.render('indexUC', { uniqueUcs: uniqueUcs, title: 'Lista de UCs' });
     })
-router.get('/ucs', authMiddleware.verificaAcesso, (req, res) => {
-  console.log('Aqui Cookies:', req.cookies);
-  axios.get('http://localhost:4200/', { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
-    .then(dados => res.render('indexUC', { ucs: dados.data, title: 'Lista de UCs' }))
     .catch(erro => {
       console.log('Erro ao carregar UCs: ' + erro);
       res.render('error', { error: erro });
     });
 });
-
 // Rota para a página geral de uma UC específica
 router.get('/ucs/:id', authMiddleware.verificaAcesso, (req, res) => {
   axios.get(`http://localhost:4200/ucs/${req.params.id}`, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
@@ -36,7 +31,6 @@ router.get('/ucs/:id', authMiddleware.verificaAcesso, (req, res) => {
 router.get('/criar', authMiddleware.verificaAcesso, (req, res) => {
   res.render('criarUC', { title: 'Criar Nova UC' });
 });
-
 
 // Rota POST para criar uma nova UC
 router.post('/ucs', authMiddleware.verificaAcesso, (req, res) => {
@@ -61,13 +55,14 @@ router.post('/ucs', authMiddleware.verificaAcesso, (req, res) => {
   axios.post('http://localhost:4200/ucs', newUC, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
     .then(() => {
       console.log('UC criada com sucesso');
-      res.redirect('/');
+      res.redirect('/ucs');
     })
     .catch(erro => {
       console.error('Erro ao criar a UC:', erro.response ? erro.response.data : erro.message);
       res.render('error', { error: erro.response ? erro.response.data : erro.message });
     });
 });
+
 // Rota para editar uma UC específica
 router.put('/ucs/:id', authMiddleware.verificaAcesso, (req, res) => {
   axios.put(`http://localhost:4200/ucs/${req.params.id}`, req.body, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
@@ -81,7 +76,7 @@ router.put('/ucs/:id', authMiddleware.verificaAcesso, (req, res) => {
 // Rota para deletar uma UC específica
 router.delete('/ucs/:id', authMiddleware.verificaAcesso, (req, res) => {
   axios.delete(`http://localhost:4200/ucs/${req.params.id}`, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
-    .then(() => res.redirect('/'))
+    .then(() => res.redirect('/ucs'))
     .catch(erro => {
       console.log('Erro ao deletar a UC: ' + erro);
       res.render('error', { error: erro });
@@ -109,10 +104,27 @@ router.get('/ucs/:sigla/conteudo', (req, res) => {
     .catch(erro => res.render('error', { error: erro }));
 });
 
-// Rota para visualizar o perfil
-router.get('/perfil', (req, res) => {
-  const user = users[0]; // Ajuste conforme necessário para selecionar o usuário
-  res.render('perfil', { title: 'Perfil', docente: user });
+router.get('/perfil', authMiddleware.verificaAcesso, (req, res) => {
+  const username = req.user.username; // Pegue o username do usuário decodificado
+  const token = req.cookies.token;
+
+  axios.get('http://localhost:4203/', { headers: { 'Authorization': `Bearer ${token}` } })
+    .then(response => {
+      const user = response.data.find(user => user.username === username);
+      if (!user) {
+        return res.status(404).render('error', { error: 'Usuário não encontrado' });
+      }
+
+      return axios.get(`http://localhost:4203/${user._id}`, { headers: { 'Authorization': `Bearer ${token}` } });
+    })
+    .then(response => {
+      const userProfile = response.data;
+      res.render('perfil', { title: 'Perfil', docente: userProfile });
+    })
+    .catch(error => {
+      console.error('Erro ao carregar perfil do usuário:', error);
+      res.render('error', { error: error.message });
+    });
 });
 
 // Rota para criar aula
