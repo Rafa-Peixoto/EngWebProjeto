@@ -13,34 +13,27 @@ const photosDir = path.join(__dirname, '../public/filestore/photos');
 fs.ensureDir(photosDir);
 
 router.post('/upload-photo', authMiddleware.verificaAcesso, upload.single('photo'), async (req, res) => {
-  const username = req.user.username;  // username do usuário autenticado
-  const token = req.cookies.token;  // token JWT extraído do cookie
-
+  const username = req.user.username;  
+  const token = req.cookies.token;  
   try {
     const userResponse = await axios.get(`http://localhost:4203/user-by-username/${username}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
-
     if (!userResponse.data) {
       return res.status(404).send("User not found");
     }
-
     const userId = userResponse.data._id;  
     const filename = `${userId}-${Date.now()}-${req.file.originalname}`;
     const targetPath = path.join(photosDir, filename); 
-
     await fs.move(req.file.path, targetPath);  
-
-    // Atualizar a foto de perfil do usuário no servidor de autenticação
     await axios.put(`http://localhost:4203/${userId}/update-photo`, {
-      profilefoto: `/filestore/photos/${filename}`  // Caminho usado para atualizar o servidor Auth
+      profilefoto: `/filestore/photos/${filename}`
     }, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
     res.redirect('/perfil');
   } catch (error) {
-    console.error('Error during photo upload or profile update:', error);
     res.status(500).send("Failed to update user profile.");
   }
 });
@@ -65,117 +58,77 @@ router.get('/perfil', authMiddleware.verificaAcesso, (req, res) => {
   });
 });
 
-          
-// // Rota principal para listar todas as UCs
-// router.get('/', authMiddleware.verificaAcesso, (req, res) => {
-//   axios.get('http://localhost:4200/ucs', { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
-//     .then(dados => {
-//       const uniqueUcs = Array.from(new Map(dados.data.map(uc => [uc.sigla, uc])).values());
-//       res.render('indexUC', { uniqueUcs: uniqueUcs, title: 'Lista de UCs', userLevel: req.user.level});
-//     })
-//     .catch(erro => {
-//       console.log('Erro ao carregar UCs: ' + erro);
-//       res.render('error', { error: erro });
-//     });
-// });
-
-// router.get('/', authMiddleware.verificaAcesso, (req, res) => {
-//   const username = req.user.username; // Supondo que req.user contém informações do usuário após autenticação
-
-//   // Primeiro, busca as UCs do usuário no servidor de autenticação
-//   axios.get(`http://localhost:4203/user-ucs/${username}`, {
-//     headers: { 'Authorization': `Bearer ${req.cookies.token}` }
-//   })
-//   .then(response => {
-//     const userUcs = response.data.ucs; // Lista de UCs que o usuário está inscrito
-
-//     // Agora, busca todas as UCs do servidor de UC
-//     axios.get('http://localhost:4200/ucs', { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
-//       .then(dados => {
-//         // Filtra apenas as UCs que estão na lista do usuário
-//         const uniqueUcs = Array.from(new Map(dados.data.filter(uc => userUcs.includes(uc.sigla)).map(uc => [uc.sigla, uc])).values());
-//         res.render('indexUC', { uniqueUcs: uniqueUcs, title: 'Lista de UCs', userLevel: req.user.level});
-//       })
-//       .catch(erro => {
-//         console.log('Erro ao carregar UCs do servidor de UCs: ' + erro);
-//         res.render('error', { error: erro });
-//       });
-//   })
-//   .catch(erro => {
-//     console.log('Erro ao carregar UCs do usuário: ' + erro);
-//     res.render('error', { error: erro });
-//   });
-// });
-
 router.get('/', authMiddleware.verificaAcesso, (req, res) => {
-  const username = req.user.username; // Assume que req.user contém informações do usuário após autenticação
-  console.log(`Buscando UCs para o usuário: ${username}`); // Log do usuário
-
-  // Primeiro, busca as UCs do usuário no servidor de autenticação
+  const username = req.user.username;
   axios.get(`http://localhost:4203/user-ucs/${username}`, {
     headers: { 'Authorization': `Bearer ${req.cookies.token}` }
   })
   .then(response => {
-    console.log(`UCs recebidas do servidor de autenticação para ${username}:`, response.data.ucs); // Log das UCs recebidas
-    const userUcs = response.data.ucs; // Lista de UCs que o usuário está inscrito
-
-    // Agora, busca todas as UCs do servidor de UC
+    const userUcs = response.data.ucs;
     axios.get('http://localhost:4200/ucs', { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
       .then(dados => {
-        console.log(`Dados brutos das UCs recebidos do servidor de UCs:`, dados.data); // Log dos dados brutos
         const uniqueUcs = Array.from(new Map(dados.data.filter(uc => userUcs.includes(uc.sigla)).map(uc => [uc.sigla, uc])).values());
-        console.log(`UCs filtradas para renderização:`, uniqueUcs); // Log das UCs filtradas
         res.render('indexUC', { uniqueUcs: uniqueUcs, title: 'Lista de UCs', userLevel: req.user.level});
       })
       .catch(erro => {
-        console.log('Erro ao carregar UCs do servidor de UCs: ' + erro);
         res.render('error', { error: erro });
       });
   })
   .catch(erro => {
-    console.log('Erro ao carregar UCs do usuário do servidor de autenticação: ' + erro);
     res.render('error', { error: erro });
   });
 });
 
-
 router.post('/add-uc', authMiddleware.verificaAcesso, (req, res) => {
   const username = req.user.username; 
   const siglaUC = req.body.siglaUC;
-  
-  // Endpoint do servidor Auth para adicionar UC
   const authServerUrl = `http://localhost:4203/add-uc/${username}`;
-
   axios.post(authServerUrl, { siglaUC: siglaUC }, {
     headers: {
       'Authorization': `Bearer ${req.cookies.token}`
     }
   })
   .then(authResponse => {
-    res.redirect('/'); // Redireciona somente se não houve erro
+    res.redirect('/'); 
   })
   .catch(error => {
     console.error('Erro ao adicionar UC:', error);
-    if (!res.headersSent) { // Checa se a resposta já foi enviada
+    if (!res.headersSent) { 
       res.status(500).send('Erro ao adicionar UC.');
     }
   });
 });
 
+router.post('/remove-uc', authMiddleware.verificaAcesso, (req, res) => {
+  const username = req.user.username;
+  const siglaUC = req.body.siglaUC;
+  const authServerUrl = `http://localhost:4203/remove-uc/${username}`;
+  axios.post(authServerUrl, { siglaUC: siglaUC }, {
+    headers: {
+      'Authorization': `Bearer ${req.cookies.token}`
+    }
+  })
+  .then(authResponse => {
+    res.redirect('/');
+  })
+  .catch(error => {
+    console.error('Erro ao remover UC:', error);
+    if (!res.headersSent) {
+      res.status(500).send('Erro ao remover UC.');
+    }
+  });
+});
 
-// Rota para a página geral de uma UC específica
 router.get('/ucs/:id', authMiddleware.verificaAcesso, (req, res) => {
   axios.get(`http://localhost:4200/ucs/${req.params.id}`, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
     .then(dados => {
       res.render('geral', { uc: dados.data, title: dados.data.titulo });
     })
     .catch(erro => {
-      console.log('Erro ao carregar a UC: ' + erro);
       res.render('error', { error: erro });
     });
 });
 
-// Rota para a página de criação de UC
 router.get('/criar', authMiddleware.verificaAcesso, (req, res) => {
   if (req.user.level < 2) {
     return res.status(403).send('Acesso Negado');
@@ -183,7 +136,6 @@ router.get('/criar', authMiddleware.verificaAcesso, (req, res) => {
   res.render('criarUC', { title: 'Criar Nova UC' , userLevel: req.user.level });
 });
 
-// Rota POST para criar uma nova UC
 router.post('/ucs', authMiddleware.verificaAcesso, (req, res) => {
   const newUC = {
     sigla: req.body.sigla,
@@ -201,8 +153,6 @@ router.post('/ucs', authMiddleware.verificaAcesso, (req, res) => {
     }
   };
 
-  console.log('Tentando criar nova UC:', newUC);
-
   axios.post('http://localhost:4200/ucs', newUC, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
     .then(() => {
       console.log('UC criada com sucesso');
@@ -214,49 +164,40 @@ router.post('/ucs', authMiddleware.verificaAcesso, (req, res) => {
     });
 });
 
-// Rota para editar uma UC específica
 router.put('/ucs/:id', authMiddleware.verificaAcesso, (req, res) => {
   axios.put(`http://localhost:4200/ucs/${req.params.id}`, req.body, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
     .then(() => res.redirect(`/ucs/${req.params.id}`))
     .catch(erro => {
-      console.log('Erro ao editar a UC: ' + erro);
       res.render('error', { error: erro });
     });
 });
 
-// Rota para deletar uma UC específica
 router.delete('/ucs/:id', authMiddleware.verificaAcesso, (req, res) => {
   axios.delete(`http://localhost:4200/ucs/${req.params.id}`, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
     .then(() => res.redirect('/ucs'))
     .catch(erro => {
-      console.log('Erro ao deletar a UC: ' + erro);
       res.render('error', { error: erro });
     });
 });
 
-// Rota para visualizar a seção 'Geral' de uma UC
 router.get('/ucs/:sigla/geral', authMiddleware.verificaAcesso, (req, res) => {
   axios.get(`http://localhost:4200/ucs/${req.params.sigla}`)
     .then(dados => res.render('geral', { uc: dados.data, title: dados.data.titulo }))
     .catch(erro => res.render('error', { error: erro }));
 });
 
-// Rota para visualizar as 'Aulas' de uma UC
 router.get('/ucs/:sigla/aulas', authMiddleware.verificaAcesso, (req, res) => {
   axios.get(`http://localhost:4200/ucs/${req.params.sigla}`)
     .then(dados => res.render('aulas', { uc: dados.data, title: dados.data.titulo }))
     .catch(erro => res.render('error', { error: erro }));
 });
 
-// Rota para visualizar o 'Conteúdo' de uma UC
 router.get('/ucs/:sigla/conteudo', authMiddleware.verificaAcesso, (req, res) => {
   axios.get(`http://localhost:4200/ucs/${req.params.sigla}`)
     .then(dados => res.render('conteudo', { uc: dados.data, title: dados.data.titulo }))
     .catch(erro => res.render('error', { error: erro }));
 });
 
-
-// Rota para criar aula
 router.get('/ucs/:sigla/criar-aula', authMiddleware.verificaAcesso, (req, res) => {
   axios.get(`http://localhost:4200/ucs/${req.params.sigla}`)
     .then(response => {
@@ -269,7 +210,6 @@ router.get('/ucs/:sigla/criar-aula', authMiddleware.verificaAcesso, (req, res) =
     });
 });
 
-// Rota para editar aula
 router.get('/ucs/:sigla/editar-aula/:aulaId', authMiddleware.verificaAcesso, (req, res) => {
   axios.get(`http://localhost:4200/ucs/${req.params.sigla}/aulas/${req.params.aulaId}`)
     .then(response => {
@@ -282,7 +222,6 @@ router.get('/ucs/:sigla/editar-aula/:aulaId', authMiddleware.verificaAcesso, (re
     });
 });
 
-// Rota para eliminar aula
 router.get('/ucs/:sigla/eliminar-aula/:aulaId', authMiddleware.verificaAcesso, (req, res) => {
   axios.get(`http://localhost:4200/ucs/${req.params.sigla}/aulas/${req.params.aulaId}`)
     .then(response => {
@@ -295,7 +234,6 @@ router.get('/ucs/:sigla/eliminar-aula/:aulaId', authMiddleware.verificaAcesso, (
     });
 });
 
-// Rota para editar UC
 router.get('/ucs/:sigla/editar-uc', authMiddleware.verificaAcesso, (req, res) => {
   axios.get(`http://localhost:4200/ucs/${req.params.sigla}`)
     .then(response => {
@@ -308,7 +246,6 @@ router.get('/ucs/:sigla/editar-uc', authMiddleware.verificaAcesso, (req, res) =>
     });
 });
 
-// Rota para apagar UC
 router.get('/ucs/:sigla/apagar-uc', authMiddleware.verificaAcesso, (req, res) => {
   res.render('apagarUC', { title: 'Apagar UC' });
 });
