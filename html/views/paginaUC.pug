@@ -8,7 +8,11 @@ block content
       li: a(href=`/ucs/${uc.sigla}/geral`) Geral
       li: a(href=`/ucs/${uc.sigla}/aulas`) Aulas
       li: a(href=`/ucs/${uc.sigla}/conteudo`) Conteúdo
-    // Espaço entre as listas
+        li
+          form.leave-uc-form(action='/remove-uc', method='POST')
+            input(type='hidden', name='siglaUC', value=uc.sigla)
+            button.leave-uc-button(type='submit') Sair
+
     hr
     ul
       li: a(href=`/ucs/${uc.sigla}/criar-aula`) Criar Aula

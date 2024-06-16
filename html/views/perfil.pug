@@ -1,16 +1,50 @@
 extends layout
 
 block content
+  style.
+    .profile-photo-container:hover .photo-overlay {
+      display: flex; // Exibe o overlay quando o mouse estiver sobre a foto
+    }
+    .photo-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5); // Fundo semitransparente para destacar o overlay
+      color: white;
+      display: none; // Inicialmente oculto
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: opacity 0.3s ease-in-out;
+      opacity: 0; // Transição suave para tornar visível
+    }
+    .photo-overlay:hover {
+      opacity: 1; // Torna o overlay totalmente visível quando o mouse está sobre ele
+    }
+    .profile-photo {
+      display: block;
+      width: 100%; // Ajusta a largura para preencher o container
+    }
+
   .profile-container
     .profile-card
-      img(src=docente.foto, alt='Foto do Docente')
+      .profile-photo-container(style='position: relative; display: inline-block;')
+        // Usa a imagem de perfil do usuário ou uma imagem padrão se nenhuma foto estiver presente
+        img.profile-photo(src=user.profilefoto || '/images/defaultuser.png', alt='Foto do usuário')
+        // Overlay que aparece ao passar o mouse sobre a foto
+        .photo-overlay
+          form(action='/upload-photo', method='POST', enctype='multipart/form-data', style='text-align: center;')
+            input(type='file', name='photo', accept='image/*', required=true)
+            button(type='submit') Upload
       .profile-info
-        h2= docente.nome
-        p Categoria: #{docente.categoria}
-        p Filiação: #{docente.filiacao}
+        h2= user.nome
+        p Categoria: #{user.categoria}
+        p Filiação: #{user.filiacao}
         p Email: 
-          a(href=`mailto:${docente.email}`)= docente.email
-        if docente.webpage
+          a(href=`mailto:${user.email}`)= user.email
+        if user.webpage
           p
             | Webpage: 
-            a(href=docente.webpage)= docente.webpage
+            a(href=user.webpage)= user.webpage

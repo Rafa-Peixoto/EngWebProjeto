@@ -21,10 +21,13 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/filestore', express.static(path.join(__dirname, 'public/filestore')));
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 const corsOptions = {
-  origin: 'http://localhost:4201',  // URL da interface
+  origin: 'http://localhost:4201', 
   credentials: true,
   allowedHeaders: ['Authorization', 'Content-Type']
 };
@@ -33,12 +36,10 @@ app.use(cors(corsOptions));
 app.use('/', indexRouter);
 app.use('/welcome', authRouter);
 
-// catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
 app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
