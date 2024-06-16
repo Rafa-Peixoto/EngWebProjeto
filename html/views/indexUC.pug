@@ -5,9 +5,9 @@ block content
     input(type="text" placeholder="Pesquisar UCs")
     a(href="/favoritos")
       i.fas.fa-star Favoritos
-    a(href="/criar")
-      i.fas.fa-plus Adicionar UC
-
+    if userLevel >= 2
+      a(href="/criar")
+        i.fas.fa-plus Adicionar UC
   .container
     each uc in uniqueUcs
       .uc-card

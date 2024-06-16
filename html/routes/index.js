@@ -1,14 +1,77 @@
 var express = require('express');
 var router = express.Router();
 var axios = require('axios');
+const multer = require('multer');
+const fs = require('fs-extra');
+const path = require('path');
 var authMiddleware = require('../../auth/middlewares/auth');
 
+const upload = multer({ dest: 'uploads/' });
+
+const baseDir = path.join(__dirname, '../public/filestore');
+const photosDir = path.join(__dirname, '../public/filestore/photos');
+fs.ensureDir(photosDir);
+
+router.post('/upload-photo', authMiddleware.verificaAcesso, upload.single('photo'), async (req, res) => {
+  const username = req.user.username;  // username do usuário autenticado
+  const token = req.cookies.token;  // token JWT extraído do cookie
+
+  try {
+    const userResponse = await axios.get(`http://localhost:4203/user-by-username/${username}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    if (!userResponse.data) {
+      return res.status(404).send("User not found");
+    }
+
+    const userId = userResponse.data._id;  
+    const filename = `${userId}-${Date.now()}-${req.file.originalname}`;
+    const targetPath = path.join(photosDir, filename); 
+
+    await fs.move(req.file.path, targetPath);  
+
+    // Atualizar a foto de perfil do usuário no servidor de autenticação
+    await axios.put(`http://localhost:4203/${userId}/update-photo`, {
+      profilefoto: `/filestore/photos/${filename}`  // Caminho usado para atualizar o servidor Auth
+    }, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    res.redirect('/perfil');
+  } catch (error) {
+    console.error('Error during photo upload or profile update:', error);
+    res.status(500).send("Failed to update user profile.");
+  }
+});
+
+router.get('/perfil', authMiddleware.verificaAcesso, (req, res) => {
+  const username = req.user.username;
+  const token = req.cookies.token;
+
+  axios.get(`http://localhost:4203/user-by-username/${username}`, {
+    headers: { 'Authorization': `Bearer ${token}` }
+  })
+  .then(response => {
+    if (!response.data) {
+      return res.status(404).render('error', { error: 'Usuário não encontrado' });
+    }
+    const userProfile = response.data;
+    res.render('perfil', { title: 'Perfil', user: userProfile });
+  })
+  .catch(error => {
+    console.error('Erro ao carregar perfil do usuário:', error);
+    res.render('error', { error: error.message });
+  });
+});
+
+          
 // Rota principal para listar todas as UCs
 router.get('/', authMiddleware.verificaAcesso, (req, res) => {
   axios.get('http://localhost:4200/ucs', { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
     .then(dados => {
       const uniqueUcs = Array.from(new Map(dados.data.map(uc => [uc.sigla, uc])).values());
-      res.render('indexUC', { uniqueUcs: uniqueUcs, title: 'Lista de UCs' });
+      res.render('indexUC', { uniqueUcs: uniqueUcs, title: 'Lista de UCs', userLevel: req.user.level});
     })
     .catch(erro => {
       console.log('Erro ao carregar UCs: ' + erro);
@@ -30,7 +93,10 @@ router.get('/ucs/:id', authMiddleware.verificaAcesso, (req, res) => {
 
 // Rota para a página de criação de UC
 router.get('/criar', authMiddleware.verificaAcesso, (req, res) => {
-  res.render('criarUC', { title: 'Criar Nova UC' });
+  if (req.user.level < 2) {
+    return res.status(403).send('Acesso Negado');
+  }
+  res.render('criarUC', { title: 'Criar Nova UC' , userLevel: req.user.level });
 });
 
 // Rota POST para criar uma nova UC
@@ -105,28 +171,6 @@ router.get('/ucs/:sigla/conteudo', authMiddleware.verificaAcesso, (req, res) => 
     .catch(erro => res.render('error', { error: erro }));
 });
 
-router.get('/perfil', authMiddleware.verificaAcesso, (req, res) => {
-  const username = req.user.username; // Pegue o username do usuário decodificado
-  const token = req.cookies.token;
-
-  axios.get('http://localhost:4203/', { headers: { 'Authorization': `Bearer ${token}` } })
-    .then(response => {
-      const user = response.data.find(user => user.username === username);
-      if (!user) {
-        return res.status(404).render('error', { error: 'Usuário não encontrado' });
-      }
-
-      return axios.get(`http://localhost:4203/${user._id}`, { headers: { 'Authorization': `Bearer ${token}` } });
-    })
-    .then(response => {
-      const userProfile = response.data;
-      res.render('perfil', { title: 'Perfil', docente: userProfile });
-    })
-    .catch(error => {
-      console.error('Erro ao carregar perfil do usuário:', error);
-      res.render('error', { error: error.message });
-    });
-});
 
 // Rota para criar aula
 router.get('/ucs/:sigla/criar-aula', authMiddleware.verificaAcesso, (req, res) => {
