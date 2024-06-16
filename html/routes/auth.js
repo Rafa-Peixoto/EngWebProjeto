@@ -16,15 +16,12 @@ router.get('/register', (req, res) => {
   res.render('register', { title: 'Register' });
 });
 
-const AUTH_SERVER = "http://localhost:4203";  // Substitua pela URL/porta real
-
 // Rota para o registro de usuários
 router.post('/register', async (req, res) => {
   try {
-    const response = await axios.post(`${AUTH_SERVER}/register`, req.body);
-    // Definir cookie com o token JWT recebido, se necessário
+    const response = await axios.post(`http://localhost:4203/register`, req.body);
     res.cookie('token', response.data.token, { httpOnly: true });
-    res.redirect('/welcome/login');  // Ou qualquer outra rota que você deseje redirecionar após o registro
+    res.redirect('/welcome/login'); 
   } catch (error) {
     console.error('Erro ao registrar usuário:', error);
     res.render('register', { error: error.response.data.error, title: 'Register' });
@@ -34,21 +31,18 @@ router.post('/register', async (req, res) => {
 // Rota para o login de usuários
 router.post('/login', async (req, res) => {
   try {
-    const response = await axios.post(`${AUTH_SERVER}/login`, req.body);
-    // Definir cookie com o token JWT
+    const response = await axios.post(`http://localhost:4203/login`, req.body);
     res.cookie('token', response.data.token, { httpOnly: true });
-    res.redirect('/ucs');  // Direcionar para a página principal após login
+    res.redirect('/');  
   } catch (error) {
     console.error('Erro ao fazer login:', error);
     res.render('login', { error: error.response.data.error, title: 'Login' });
   }
 });
 
-// Rota para o logout de usuários
 router.get('/logout', (req, res) => {
-  // Simplesmente limpar o cookie do token
   res.clearCookie('token');
-  res.redirect('/login');  // Redirecionar para a página de login
+  res.redirect('/welcome');
 });
 
 module.exports = router;

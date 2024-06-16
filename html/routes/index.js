@@ -4,7 +4,7 @@ var axios = require('axios');
 var authMiddleware = require('../../auth/middlewares/auth');
 
 // Rota principal para listar todas as UCs
-router.get('/ucs', authMiddleware.verificaAcesso, (req, res) => {
+router.get('/', authMiddleware.verificaAcesso, (req, res) => {
   axios.get('http://localhost:4200/ucs', { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
     .then(dados => {
       const uniqueUcs = Array.from(new Map(dados.data.map(uc => [uc.sigla, uc])).values());
@@ -15,6 +15,7 @@ router.get('/ucs', authMiddleware.verificaAcesso, (req, res) => {
       res.render('error', { error: erro });
     });
 });
+
 // Rota para a página geral de uma UC específica
 router.get('/ucs/:id', authMiddleware.verificaAcesso, (req, res) => {
   axios.get(`http://localhost:4200/ucs/${req.params.id}`, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
@@ -84,21 +85,21 @@ router.delete('/ucs/:id', authMiddleware.verificaAcesso, (req, res) => {
 });
 
 // Rota para visualizar a seção 'Geral' de uma UC
-router.get('/ucs/:sigla/geral', (req, res) => {
+router.get('/ucs/:sigla/geral', authMiddleware.verificaAcesso, (req, res) => {
   axios.get(`http://localhost:4200/ucs/${req.params.sigla}`)
     .then(dados => res.render('geral', { uc: dados.data, title: dados.data.titulo }))
     .catch(erro => res.render('error', { error: erro }));
 });
 
 // Rota para visualizar as 'Aulas' de uma UC
-router.get('/ucs/:sigla/aulas', (req, res) => {
+router.get('/ucs/:sigla/aulas', authMiddleware.verificaAcesso, (req, res) => {
   axios.get(`http://localhost:4200/ucs/${req.params.sigla}`)
     .then(dados => res.render('aulas', { uc: dados.data, title: dados.data.titulo }))
     .catch(erro => res.render('error', { error: erro }));
 });
 
 // Rota para visualizar o 'Conteúdo' de uma UC
-router.get('/ucs/:sigla/conteudo', (req, res) => {
+router.get('/ucs/:sigla/conteudo', authMiddleware.verificaAcesso, (req, res) => {
   axios.get(`http://localhost:4200/ucs/${req.params.sigla}`)
     .then(dados => res.render('conteudo', { uc: dados.data, title: dados.data.titulo }))
     .catch(erro => res.render('error', { error: erro }));
@@ -128,7 +129,7 @@ router.get('/perfil', authMiddleware.verificaAcesso, (req, res) => {
 });
 
 // Rota para criar aula
-router.get('/ucs/:sigla/criar-aula', (req, res) => {
+router.get('/ucs/:sigla/criar-aula', authMiddleware.verificaAcesso, (req, res) => {
   axios.get(`http://localhost:4200/ucs/${req.params.sigla}`)
     .then(response => {
       const uc = response.data;
@@ -141,7 +142,7 @@ router.get('/ucs/:sigla/criar-aula', (req, res) => {
 });
 
 // Rota para editar aula
-router.get('/ucs/:sigla/editar-aula/:aulaId', (req, res) => {
+router.get('/ucs/:sigla/editar-aula/:aulaId', authMiddleware.verificaAcesso, (req, res) => {
   axios.get(`http://localhost:4200/ucs/${req.params.sigla}/aulas/${req.params.aulaId}`)
     .then(response => {
       const aula = response.data;
@@ -154,7 +155,7 @@ router.get('/ucs/:sigla/editar-aula/:aulaId', (req, res) => {
 });
 
 // Rota para eliminar aula
-router.get('/ucs/:sigla/eliminar-aula/:aulaId', (req, res) => {
+router.get('/ucs/:sigla/eliminar-aula/:aulaId', authMiddleware.verificaAcesso, (req, res) => {
   axios.get(`http://localhost:4200/ucs/${req.params.sigla}/aulas/${req.params.aulaId}`)
     .then(response => {
       const aula = response.data;
@@ -167,7 +168,7 @@ router.get('/ucs/:sigla/eliminar-aula/:aulaId', (req, res) => {
 });
 
 // Rota para editar UC
-router.get('/ucs/:sigla/editar-uc', (req, res) => {
+router.get('/ucs/:sigla/editar-uc', authMiddleware.verificaAcesso, (req, res) => {
   axios.get(`http://localhost:4200/ucs/${req.params.sigla}`)
     .then(response => {
       const uc = response.data;
@@ -180,7 +181,7 @@ router.get('/ucs/:sigla/editar-uc', (req, res) => {
 });
 
 // Rota para apagar UC
-router.get('/ucs/:sigla/apagar-uc', (req, res) => {
+router.get('/ucs/:sigla/apagar-uc', authMiddleware.verificaAcesso, (req, res) => {
   res.render('apagarUC', { title: 'Apagar UC' });
 });
 
