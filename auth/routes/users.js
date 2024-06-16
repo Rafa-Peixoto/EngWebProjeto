@@ -6,6 +6,43 @@ var jwt = require('jsonwebtoken');
 
 const SECRET_KEY = process.env.SECRET_KEY || 'EngWeb2024';
 
+router.get('/user-ucs/:username', (req, res) => {
+  User.findOne({ username: req.params.username })
+    .then(user => {
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      // Retorna apenas as UCs do usuário
+      res.json({ ucs: user.ucs });
+    })
+    .catch(err => res.status(500).json({ error: err.message }));
+});
+
+router.post('/add-uc/:username', (req, res) => {
+  const siglaUC = req.body.siglaUC; // Certifique-se de que 'siglaUC' é enviado no corpo da requisição
+
+  console.log(`Adicionando UC: ${siglaUC} para o usuário: ${req.params.username}`); // Log da tentativa de adição
+
+  User.findOneAndUpdate(
+    { username: req.params.username },
+    { $addToSet: { ucs: siglaUC } }, // Usando $addToSet para evitar duplicatas
+    { new: true }
+  )
+  .then(user => {
+    if (!user) {
+      console.log('Usuário não encontrado: ', req.params.username); // Log se o usuário não foi encontrado
+      return res.status(404).json({ error: 'User not found' });
+    }
+    console.log(`UC adicionada com sucesso. UCs atualizadas: ${user.ucs}`); // Log do sucesso na operação
+    res.json({ message: "UC added successfully", ucs: user.ucs });
+  })
+  .catch(err => {
+    console.log('Erro ao adicionar UC:', err); // Log se ocorrer algum erro na atualização
+    res.status(500).json({ error: err.message });
+  });
+});
+
+
 router.put('/:id/update-photo', (req, res) => {
   const { profilefoto } = req.body;
   User.findByIdAndUpdate(req.params.id, { profilefoto }, { new: true })

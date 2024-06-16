@@ -66,18 +66,102 @@ router.get('/perfil', authMiddleware.verificaAcesso, (req, res) => {
 });
 
           
-// Rota principal para listar todas as UCs
+// // Rota principal para listar todas as UCs
+// router.get('/', authMiddleware.verificaAcesso, (req, res) => {
+//   axios.get('http://localhost:4200/ucs', { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
+//     .then(dados => {
+//       const uniqueUcs = Array.from(new Map(dados.data.map(uc => [uc.sigla, uc])).values());
+//       res.render('indexUC', { uniqueUcs: uniqueUcs, title: 'Lista de UCs', userLevel: req.user.level});
+//     })
+//     .catch(erro => {
+//       console.log('Erro ao carregar UCs: ' + erro);
+//       res.render('error', { error: erro });
+//     });
+// });
+
+// router.get('/', authMiddleware.verificaAcesso, (req, res) => {
+//   const username = req.user.username; // Supondo que req.user contém informações do usuário após autenticação
+
+//   // Primeiro, busca as UCs do usuário no servidor de autenticação
+//   axios.get(`http://localhost:4203/user-ucs/${username}`, {
+//     headers: { 'Authorization': `Bearer ${req.cookies.token}` }
+//   })
+//   .then(response => {
+//     const userUcs = response.data.ucs; // Lista de UCs que o usuário está inscrito
+
+//     // Agora, busca todas as UCs do servidor de UC
+//     axios.get('http://localhost:4200/ucs', { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
+//       .then(dados => {
+//         // Filtra apenas as UCs que estão na lista do usuário
+//         const uniqueUcs = Array.from(new Map(dados.data.filter(uc => userUcs.includes(uc.sigla)).map(uc => [uc.sigla, uc])).values());
+//         res.render('indexUC', { uniqueUcs: uniqueUcs, title: 'Lista de UCs', userLevel: req.user.level});
+//       })
+//       .catch(erro => {
+//         console.log('Erro ao carregar UCs do servidor de UCs: ' + erro);
+//         res.render('error', { error: erro });
+//       });
+//   })
+//   .catch(erro => {
+//     console.log('Erro ao carregar UCs do usuário: ' + erro);
+//     res.render('error', { error: erro });
+//   });
+// });
+
 router.get('/', authMiddleware.verificaAcesso, (req, res) => {
-  axios.get('http://localhost:4200/ucs', { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
-    .then(dados => {
-      const uniqueUcs = Array.from(new Map(dados.data.map(uc => [uc.sigla, uc])).values());
-      res.render('indexUC', { uniqueUcs: uniqueUcs, title: 'Lista de UCs', userLevel: req.user.level});
-    })
-    .catch(erro => {
-      console.log('Erro ao carregar UCs: ' + erro);
-      res.render('error', { error: erro });
-    });
+  const username = req.user.username; // Assume que req.user contém informações do usuário após autenticação
+  console.log(`Buscando UCs para o usuário: ${username}`); // Log do usuário
+
+  // Primeiro, busca as UCs do usuário no servidor de autenticação
+  axios.get(`http://localhost:4203/user-ucs/${username}`, {
+    headers: { 'Authorization': `Bearer ${req.cookies.token}` }
+  })
+  .then(response => {
+    console.log(`UCs recebidas do servidor de autenticação para ${username}:`, response.data.ucs); // Log das UCs recebidas
+    const userUcs = response.data.ucs; // Lista de UCs que o usuário está inscrito
+
+    // Agora, busca todas as UCs do servidor de UC
+    axios.get('http://localhost:4200/ucs', { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
+      .then(dados => {
+        console.log(`Dados brutos das UCs recebidos do servidor de UCs:`, dados.data); // Log dos dados brutos
+        const uniqueUcs = Array.from(new Map(dados.data.filter(uc => userUcs.includes(uc.sigla)).map(uc => [uc.sigla, uc])).values());
+        console.log(`UCs filtradas para renderização:`, uniqueUcs); // Log das UCs filtradas
+        res.render('indexUC', { uniqueUcs: uniqueUcs, title: 'Lista de UCs', userLevel: req.user.level});
+      })
+      .catch(erro => {
+        console.log('Erro ao carregar UCs do servidor de UCs: ' + erro);
+        res.render('error', { error: erro });
+      });
+  })
+  .catch(erro => {
+    console.log('Erro ao carregar UCs do usuário do servidor de autenticação: ' + erro);
+    res.render('error', { error: erro });
+  });
 });
+
+
+router.post('/add-uc', authMiddleware.verificaAcesso, (req, res) => {
+  const username = req.user.username; 
+  const siglaUC = req.body.siglaUC;
+  
+  // Endpoint do servidor Auth para adicionar UC
+  const authServerUrl = `http://localhost:4203/add-uc/${username}`;
+
+  axios.post(authServerUrl, { siglaUC: siglaUC }, {
+    headers: {
+      'Authorization': `Bearer ${req.cookies.token}`
+    }
+  })
+  .then(authResponse => {
+    res.redirect('/'); // Redireciona somente se não houve erro
+  })
+  .catch(error => {
+    console.error('Erro ao adicionar UC:', error);
+    if (!res.headersSent) { // Checa se a resposta já foi enviada
+      res.status(500).send('Erro ao adicionar UC.');
+    }
+  });
+});
+
 
 // Rota para a página geral de uma UC específica
 router.get('/ucs/:id', authMiddleware.verificaAcesso, (req, res) => {

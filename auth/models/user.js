@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   email: String,
   filiacao: String,
   profilefoto: String,
+  ucs: [String],
   level: { type: Number, default: 1 },
   active: { type: Boolean, default: true },
   dateCreated: { type: Date, default: Date.now },
