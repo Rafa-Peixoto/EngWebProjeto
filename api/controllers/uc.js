@@ -37,3 +37,6 @@ module.exports.update = (id, ucData) => {
 module.exports.findAulaById = (ucId, aulaId) => {
   return UC.findOne({ sigla: ucId, "aulas._id": aulaId }, { "aulas.$": 1 }).exec();
 }
+
+
+
