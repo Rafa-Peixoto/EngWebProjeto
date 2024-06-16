@@ -40,16 +40,16 @@ router.post('/', (req, res) => {
   const newUC = {
     sigla: req.body.sigla,
     titulo: req.body.titulo,
-    docentes: req.body.docentes.split(',').map(docente => docente.trim()),
+    docentes: Array.isArray(req.body.docentes) ? req.body.docentes : (req.body.docentes || '').split(',').map(docente => docente.trim()),
     horario: {
-      teoricas: req.body.teoricas.split(',').map(teorica => teorica.trim()),
-      praticas: req.body.praticas.split(',').map(pratica => pratica.trim())
+      teoricas: Array.isArray(req.body.teoricas) ? req.body.teoricas : (req.body.teoricas || '').split(',').map(teorica => teorica.trim()),
+      praticas: Array.isArray(req.body.praticas) ? req.body.praticas : (req.body.praticas || '').split(',').map(pratica => pratica.trim())
     },
-    avaliacao: req.body.avaliacao.split(',').map(avaliacao => avaliacao.trim()),
+    avaliacao: Array.isArray(req.body.avaliacao) ? req.body.avaliacao : (req.body.avaliacao || '').split(',').map(avaliacao => avaliacao.trim()),
     datas: {
-      teste: req.body.dataTeste,
-      exame: req.body.dataExame,
-      projeto: req.body.dataProjeto
+      teste: req.body.dataTeste || '',
+      exame: req.body.dataExame || '',
+      projeto: req.body.dataProjeto || ''
     }
   };
 
@@ -59,7 +59,7 @@ router.post('/', (req, res) => {
     .then(() => res.status(201).send('UC criada com sucesso'))
     .catch(erro => {
       console.error('Erro ao criar a UC:', erro.message);
-      res.status(500).send('Erro ao criar a UC');
+      res.status(500).send({ error: erro.message });
     });
 });
 
@@ -78,15 +78,27 @@ router.delete('/:id', (req, res) => {
 
 // Atualizar UC por ID (sigla aqui é o id)
 router.put('/:id', (req, res) => {
-  ucController.update(req.params.id, req.body)
-    .then(resultado => {
-      if (resultado.nModified > 0) {
-        res.status(200).json({ message: "UC atualizada com sucesso" });
-      } else {
-        res.status(404).send('UC não encontrada para atualizar');
-      }
-    })
-    .catch(erro => res.status(500).send(erro));
+  const ucData = {
+    titulo: req.body.titulo,
+    docentes: Array.isArray(req.body.docentes) ? req.body.docentes : (req.body.docentes || '').split(',').map(docente => docente.trim()),
+    horario: {
+      teoricas: Array.isArray(req.body.teoricas) ? req.body.teoricas : (req.body.teoricas || '').split(',').map(teorica => teorica.trim()),
+      praticas: Array.isArray(req.body.praticas) ? req.body.praticas : (req.body.praticas || '').split(',').map(pratica => pratica.trim())
+    },
+    avaliacao: Array.isArray(req.body.avaliacao) ? req.body.avaliacao : (req.body.avaliacao || '').split(',').map(avaliacao => avaliacao.trim()),
+    datas: {
+      teste: req.body.dataTeste ? new Date(req.body.dataTeste) : null,
+      exame: req.body.dataExame ? new Date(req.body.dataExame) : null,
+      projeto: req.body.dataProjeto ? new Date(req.body.dataProjeto) : null
+    }
+  };
+
+  ucController.update(req.params.id, ucData)
+    .then(() => res.status(200).send('UC atualizada com sucesso'))
+    .catch(erro => {
+      console.error('Erro ao atualizar a UC:', erro.message);
+      res.status(500).send({ error: erro.message });
+    });
 });
 
 module.exports = router;

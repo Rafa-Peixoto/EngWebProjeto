@@ -1,36 +1,31 @@
-extends paginaUC
+extends layout
 
-block innerContent
-
+block content
   .form-container
     h1 Editar UC
-    form(action=`/ucs/${uc._id}?_method=PUT` method="post")
-      .form-group
-        label(for="sigla") Sigla:
-        input.form-control(type="text" id="sigla" name="sigla" value=uc.sigla required)
+    form(action=`/ucs/${uc.sigla}/editar-uc` method="post")
       .form-group
         label(for="titulo") Título:
-        input.form-control(type="text" id="titulo" name="titulo" value=uc.titulo required)
+        input(type="text" id="titulo" name="titulo" required value=uc.titulo)
       .form-group
         label(for="docentes") Docentes:
-        textarea.form-control(id="docentes" name="docentes" required)= uc.docentes.join(', ')
+        textarea(id="docentes" name="docentes" required placeholder="Separados por vírgula")= uc.docentes.join(',')
       .form-group
-        label(for="teoricas") Aulas Teóricas:
-        textarea.form-control(id="teoricas" name="teoricas" required)= uc.horario.teoricas.join(', ')
+        label(for="teoricas") Horário das Aulas Teóricas:
+        textarea(id="teoricas" name="teoricas" required placeholder="Separadas por vírgula")= uc.horario.teoricas.join(',')
       .form-group
-        label(for="praticas") Aulas Práticas:
-        textarea.form-control(id="praticas" name="praticas" required)= uc.horario.praticas.join(', ')
+        label(for="praticas") Horário das Aulas Práticas:
+        textarea(id="praticas" name="praticas" required placeholder="Separadas por vírgula")= uc.horario.praticas.join(',')
       .form-group
         label(for="avaliacao") Avaliação:
-        textarea.form-control(id="avaliacao" name="avaliacao" required)= uc.avaliacao.join(', ')
+        textarea(id="avaliacao" name="avaliacao" required placeholder="Separadas por vírgula")= uc.avaliacao.join(',')
       .form-group
         label(for="dataTeste") Data do Teste:
-        input.form-control(type="date" id="dataTeste" name="dataTeste" value=uc.datas.teste)
+        input(type="date" id="dataTeste" name="dataTeste" value=uc.datas.teste ? uc.datas.teste.toISOString().split('T')[0] : '')
       .form-group
         label(for="dataExame") Data do Exame:
-        input.form-control(type="date" id="dataExame" name="dataExame" value=uc.datas.exame)
+        input(type="date" id="dataExame" name="dataExame" value=uc.datas.exame ? uc.datas.exame.toISOString().split('T')[0] : '')
       .form-group
         label(for="dataProjeto") Data do Projeto:
-        input.form-control(type="date" id="dataProjeto" name="dataProjeto" value=uc.datas.projeto)
-      button.btn.btn-primary(type="submit") Atualizar UC
-
+        input(type="date" id="dataProjeto" name="dataProjeto" value=uc.datas.projeto ? uc.datas.projeto.toISOString().split('T')[0] : '')
+      button(type="submit") Atualizar UC

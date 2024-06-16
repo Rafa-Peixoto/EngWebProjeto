@@ -5,11 +5,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+var methodOverride = require('method-override');
 
 var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
 
 var app = express();
+
+app.use(methodOverride('_method'));
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -26,7 +29,6 @@ const corsOptions = {
   allowedHeaders: ['Authorization', 'Content-Type']
 };
 app.use(cors(corsOptions));
-
 
 app.use('/', indexRouter);
 app.use('/welcome', authRouter);

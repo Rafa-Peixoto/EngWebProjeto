@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const UC = require('../models/uc');
 
 module.exports.list = async () => {
@@ -9,12 +10,19 @@ module.exports.findById = (id) => {
 }
 
 module.exports.insert = async (uc) => {
-  const existingUC = await UC.findOne({ sigla: uc.sigla }).exec();
-  if (existingUC) {
-    throw new Error('UC com esta sigla já existe');
+  try {
+    const existingUC = await UC.findOne({ sigla: uc.sigla }).exec();
+    if (existingUC) {
+      throw new Error('UC com esta sigla já existe');
+    }
+    uc._id = new mongoose.Types.ObjectId();  // Gerando um novo ObjectId para o campo _id
+    uc.datas = uc.datas || { teste: null, exame: null, projeto: null }; // Inicializar datas
+    console.log('Inserindo nova UC no banco de dados:', uc);
+    return UC.create(uc);
+  } catch (erro) {
+    console.error('Erro ao inserir nova UC:', erro.message);
+    throw erro;
   }
-  uc._id = uc.sigla;  // Definindo o _id com base na sigla
-  return UC.create(uc);
 }
 
 module.exports.removeById = (id) => {
@@ -22,6 +30,7 @@ module.exports.removeById = (id) => {
 }
 
 module.exports.update = (id, ucData) => {
+  ucData.datas = ucData.datas || { teste: null, exame: null, projeto: null }; // Inicializar datas
   return UC.updateOne({ sigla: id }, ucData, { new: true }).exec();
 }
 

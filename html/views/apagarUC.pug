@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  .form-container
+    h1 Apagar UC
+    p Você tem certeza que deseja apagar a UC #{uc.titulo} (#{uc.sigla})?
+    form(action=`/ucs/${uc.sigla}?_method=DELETE` method="POST")
+      button(type="submit" class="btn btn-danger") Confirmar Apagar
+    a(href="/") Cancelar
