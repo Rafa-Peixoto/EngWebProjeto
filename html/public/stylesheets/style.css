@@ -493,3 +493,153 @@ textarea.form-control {
 .back-button:hover {
     background-color: #0056b3;
 }
+
+/* Ajustes para garantir que o formulário esteja visível em qualquer monitor */
+.form-container {
+    max-width: 800px;
+    margin: 100px auto; /* Reduz o espaço no topo */
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Alinhar os rótulos com o início da respectiva caixa de texto */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    margin-bottom: 0.5rem;
+}
+
+/* Ajuste adicional para campos de texto e textarea */
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+
+
+/* Estilos para a barra lateral */
+.side-nav {
+    position: fixed;
+    top: 100px; /* Ajustado para caber sob as barras de navegação */
+    left: 0;
+    width: 200px;
+    height: calc(100% - 100px); /* Ajuste baseado na altura das barras de navegação */
+    background-color: #36B597;
+    padding: 10px 0;
+    z-index: 999;
+    overflow-y: auto; /* Adicionado para permitir rolagem se necessário */
+}
+
+.side-nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.side-nav li a {
+    color: white;
+    padding: 10px 20px;
+    display: block;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.side-nav li a:hover {
+    background-color: #2a5440;
+}
+
+/* Ajustes para visibilidade dos botões */
+.side-nav li a.button {
+    background-color: #36B597; /* Mesma cor que "Geral", "Aulas" e "Conteúdo" */
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.side-nav li a.button:hover {
+    background-color: #2a5440;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .side-nav {
+        width: 100%;
+        height: auto;
+        position: relative;
+        top: auto;
+    }
+
+    .side-nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .side-nav li {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .side-nav li a {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+}
+/* Estilos para o botão "Sair" */
+button.leave-uc-button {
+    background-color: #36B597; /* Mesma cor que "Geral", "Aulas" e "Conteúdo" */
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    display: block; /* Garante que o botão ocupe toda a largura disponível */
+    margin: 5px 0; /* Espaçamento entre os botões */
+    text-decoration: none;
+    border: none; /* Remove a borda padrão do botão */
+    cursor: pointer;
+}
+
+button.leave-uc-button:hover {
+    background-color: #2a5440;
+}
+.side-nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.side-nav li {
+    margin-bottom: 10px;
+}
+
+.side-nav li a, .leave-uc-button {
+    background-color: #36B597; /* Mesma cor que "Geral", "Aulas" e "Conteúdo" */
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    display: block; /* Garante que os botões ocupem toda a largura disponível */
+    margin: 5px 20px; /* Ajuste a margem conforme necessário */
+    text-decoration: none;
+}
+
+.side-nav li a:hover, .leave-uc-button:hover {
+    background-color: #2a5440;
+}
