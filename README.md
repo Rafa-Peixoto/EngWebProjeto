@@ -23,11 +23,11 @@ O projeto é uma aplicação web completa que integra várias partes para fornec
     │   │   └── user.js
     │   ├── middlewares
     │   │   └── auth.js
-        │   ├── middlewares
+    |    │   ├── middlewares
     │   │   └── auth.js
-        │   ├── models
+    |    │   ├── models
     │   │   └── user.js
-        │   ├── routes
+    |   │   ├── routes
     │   │   └── users.js
     │   ├── package-lock.json
     │   ├── package.json
@@ -76,4 +76,11 @@ O projeto é uma aplicação web completa que integra várias partes para fornec
     ├── setup-container.py
     ├── ucs.json
     └── users.json
+    
+    
+    
+    
+    
+    
+    
     
