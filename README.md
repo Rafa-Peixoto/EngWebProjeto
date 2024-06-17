@@ -1,7 +1,7 @@
 # Relatório do Projeto
-Mateus Lemos Martins (a100645)
-Rafael Vale da Costa Peixoto(a100754)
-Guilherme Oliveira(a)
+Mateus Lemos Martins (a100645), 
+ Rafael Vale da Costa Peixoto(a100754), 
+ Guilherme Oliveira(a95021)
 ## Preparação do Dataset e do Povoamento Inicial
 
 Dado o dataset que nos foi disponibilizado (um ficheiro json para cada UC), decidimos juntar tudo em um único ficheiro json, em forma de array. Alteramos também os docentes, representando-os dentro da UC apenas com a sua sigla. Criamos também outro ficheiro json (que corresponde a outra coleção) para armazenar os docentes (que, neste caso, são utilizadores do sistema, com permissões de Docente, exceto o professor José Carlos Ramalho que tem permissões de AdminDocente (Docente + Administrador)).
