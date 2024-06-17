@@ -13,8 +13,8 @@ const photosDir = path.join(__dirname, '../public/filestore/photos');
 fs.ensureDir(photosDir);
 
 router.post('/upload-photo', authMiddleware.verificaAcesso, upload.single('photo'), async (req, res) => {
-  const username = req.user.username;  
-  const token = req.cookies.token;  
+  const username = req.user.username;
+  const token = req.cookies.token;
   try {
     const userResponse = await axios.get(`http://localhost:4203/user-by-username/${username}`, {
       headers: { 'Authorization': `Bearer ${token}` }
@@ -22,10 +22,10 @@ router.post('/upload-photo', authMiddleware.verificaAcesso, upload.single('photo
     if (!userResponse.data) {
       return res.status(404).send("User not found");
     }
-    const userId = userResponse.data._id;  
+    const userId = userResponse.data._id;
     const filename = `${userId}-${Date.now()}-${req.file.originalname}`;
-    const targetPath = path.join(photosDir, filename); 
-    await fs.move(req.file.path, targetPath);  
+    const targetPath = path.join(photosDir, filename);
+    await fs.move(req.file.path, targetPath);
     await axios.put(`http://localhost:4203/${userId}/update-photo`, {
       profilefoto: `/filestore/photos/${filename}`
     }, {
@@ -80,7 +80,7 @@ router.get('/', authMiddleware.verificaAcesso, (req, res) => {
 });
 
 router.post('/add-uc', authMiddleware.verificaAcesso, (req, res) => {
-  const username = req.user.username; 
+  const username = req.user.username;
   const siglaUC = req.body.siglaUC;
   const authServerUrl = `http://localhost:4203/add-uc/${username}`;
   axios.post(authServerUrl, { siglaUC: siglaUC }, {
@@ -89,11 +89,11 @@ router.post('/add-uc', authMiddleware.verificaAcesso, (req, res) => {
     }
   })
   .then(authResponse => {
-    res.redirect('/'); 
+    res.redirect('/');
   })
   .catch(error => {
     console.error('Erro ao adicionar UC:', error);
-    if (!res.headersSent) { 
+    if (!res.headersSent) {
       res.status(500).send('Erro ao adicionar UC.');
     }
   });
@@ -249,5 +249,27 @@ router.get('/ucs/:sigla/editar-uc', authMiddleware.verificaAcesso, (req, res) =>
 router.get('/ucs/:sigla/apagar-uc', authMiddleware.verificaAcesso, (req, res) => {
   res.render('apagarUC', { title: 'Apagar UC' });
 });
+
+router.get('/welcome', (req, res) => {
+  res.render('welcomepage', {
+    title: 'Bem-vindo',
+    pageBackgroundClass: 'background-page'
+  });
+});
+
+router.get('/login', (req, res) => {
+  res.render('login', {
+    title: 'Login',
+    pageBackgroundClass: 'background-page'
+  });
+});
+
+router.get('/register', (req, res) => {
+  res.render('register', {
+    title: 'Registo',
+    pageBackgroundClass: 'background-page'
+  });
+});
+
 
 module.exports = router;

@@ -1,22 +1,19 @@
 doctype html
 html
   head
-    title Log In
+    title Login Page
     link(rel="stylesheet", href="/stylesheets/style.css")
-  body
+  body(class="login-page")
     .background-blur
-    a.back-button(href="/welcome") ← Voltar atrás
-    .container
-      h1 Inicie Sessão
-      if error
-        .error #{error.message}
-      form(action="http://localhost:4201/", method="post")
+    a.back-button(href="/welcome") Voltar
+    .login-container
+      h1 Login Page
+      form(action="/welcome/login", method="post")
         div
           label(for="username") Username:
-          input(type="text", id="username", name="username", required)
+          input(type="text", name="username", id="username")
         div
           label(for="password") Password:
-          input(type="password", id="password", name="password", required)
-        div
-          button(type="submit") Iniciar Sessão
-    .footer Treble com o Mourinho
+          input(type="password", name="password", id="password")
+        button(type="submit") Login
+      a(href="/register") Não tem uma conta? Registre-se aqui
