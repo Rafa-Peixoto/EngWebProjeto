@@ -1,34 +1,20 @@
-extends layout
+extends paginaUC
 
-block content
-  .sub-nav
-    input(type="text" placeholder="Pesquisar UCs")
-    a(href="/favoritos") 
-      i.fas.fa-star Favoritos
-    a(href="/criar") 
-      i.fas.fa-plus Adicionar UC
+block innerContent
+  .uc-container
+    .uc-details
+      // Renderiza o formulário de upload apenas se o usuário for o owner
+      if isOwner
+        h3 Upload de Conteúdo
+        form(action=`/upload-content/${uc.sigla}`, method='POST', enctype='multipart/form-data')
+          input(type='hidden', name='ucId', value=uc._id)
+          input(type='file', name='contentFile', accept='.pdf,.doc,.docx,.ppt,.pptx,.zip', required=true)
+          button(type='submit') Upload
 
-  .container
-    each uc in ucs
-      .uc-card
-        h2= uc.titulo
-        p Docentes: #{uc.docentes.join(', ')}
-        a(href=`/ucs/${uc.sigla}`) Mais informações
-
-  script.
-    document.addEventListener('DOMContentLoaded', function() {
-      const searchInput = document.querySelector('.sub-nav input[type="text"]');
-      const ucsCards = document.querySelectorAll('.uc-card');
-    
-      searchInput.addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase();
-        ucsCards.forEach(card => {
-          const title = card.querySelector('h2').textContent.toLowerCase();
-          if (title.includes(searchTerm)) {
-            card.style.display = '';
-          } else {
-            card.style.display = 'none';
-          }
-        });
-      });
-    });
+      // Listar arquivos já carregados (se aplicável)
+      if uc.conteudo && uc.conteudo.length > 0
+        h3 Conteúdo
+        ul
+          each file in uc.conteudo
+            li
+              a(href=`/download/${uc.sigla}/${file}`, download)= file

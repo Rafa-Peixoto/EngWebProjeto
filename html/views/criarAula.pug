@@ -6,14 +6,14 @@ block innerContent
     form(method='POST', action=`/ucs/${uc.sigla}/criar-aula`)
       .form-group
         label(for='tipo') Tipo:
-        select.form-control(id='tipo', name='tipo' required)
+        select.form-control(id='tipo', name='tipo', required)
           option(value='') Selecione o tipo de aula
           option(value='T') T (Aula Teórica)
           option(value='P') P (Aula Prática)
       .form-group
         label(for='data') Data:
-        input.form-control(type='date', id='data', name='data' required)
+        input.form-control(type='date', id='data', name='data', required)
       .form-group
         label(for='sumario') Sumário:
-        textarea.form-control(id='sumario', name='sumario' required)
+        textarea.form-control(id='sumario', name='sumario', required)
       button.btn.btn-primary(type='submit') Adicionar Aula
