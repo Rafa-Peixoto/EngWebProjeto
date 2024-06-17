@@ -40,8 +40,7 @@ block content
             button(type='submit') Upload
       .profile-info
         h2= user.nome
-        p Categoria: #{user.categoria}
-        p Filiação: #{user.filiacao}
+        p Username: #{user.username}
         p Email: 
           a(href=`mailto:${user.email}`)= user.email
         if user.webpage

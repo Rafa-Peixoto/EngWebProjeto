@@ -9,23 +9,23 @@ block content
         input(type="text" id="titulo" name="titulo" required value=uc.titulo)
       .form-group
         label(for="docentes") Docentes:
-        textarea(id="docentes" name="docentes" required placeholder="Separados por vírgula")= uc.docentes.join(',')
+        input(id="docentes" name="docentes" required value=uc.docentes.join(";"))
       .form-group
         label(for="teoricas") Horário das Aulas Teóricas:
-        textarea(id="teoricas" name="teoricas" required placeholder="Separadas por vírgula")= uc.horario.teoricas.join(',')
+        input(id="teoricas" name="teoricas" required value=uc.horario.teoricas.join(";"))
       .form-group
         label(for="praticas") Horário das Aulas Práticas:
-        textarea(id="praticas" name="praticas" required placeholder="Separadas por vírgula")= uc.horario.praticas.join(',')
+        input(id="praticas" name="praticas" required  value=uc.horario.praticas.join(";"))
       .form-group
         label(for="avaliacao") Avaliação:
-        textarea(id="avaliacao" name="avaliacao" required placeholder="Separadas por vírgula")= uc.avaliacao.join(',')
+        input(id="avaliacao" name="avaliacao" required value=uc.avaliacao.join(";"))
       .form-group
         label(for="dataTeste") Data do Teste:
-        input(type="date" id="dataTeste" name="dataTeste" value=uc.datas.teste ? uc.datas.teste.toISOString().split('T')[0] : '')
+        input(type="date" id="dataTeste" name="dataTeste" value=uc.datas.teste)
       .form-group
         label(for="dataExame") Data do Exame:
-        input(type="date" id="dataExame" name="dataExame" value=uc.datas.exame ? uc.datas.exame.toISOString().split('T')[0] : '')
+        input(type="date" id="dataExame" name="dataExame" value=uc.datas.exame)
       .form-group
         label(for="dataProjeto") Data do Projeto:
-        input(type="date" id="dataProjeto" name="dataProjeto" value=uc.datas.projeto ? uc.datas.projeto.toISOString().split('T')[0] : '')
-      button(type="submit") Atualizar UC
+        input(type="date" id="dataProjeto" name="dataProjeto" value=uc.datas.projeto)
+      button(type="submit") Atualizar

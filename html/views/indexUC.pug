@@ -3,16 +3,11 @@ extends layout
 block content
   .sub-nav
     input(type="text" placeholder="Pesquisar UCs")
-    a(href="/favoritos")
-      i.fas.fa-star Favoritos
+    form#addUcForm(method='POST', action='/add-uc')
+      input(type='text', name='siglaUC', placeholder='Digite a sigla da UC', required=true)
     if userLevel >= 2
       a(href="/criar")
         i.fas.fa-plus Criar UC
-
-  .sub-nav-lower
-    form#addUcForm(method='POST', action='/add-uc')
-      input(type='text', name='siglaUC', placeholder='Digite a sigla da UC', required=true)
-      button(type='submit') Adicionar UC
 
   .container
     each uc in uniqueUcs
@@ -36,5 +31,14 @@ block content
             card.style.display = 'none';
           }
         });
+      });
+
+      // Optional script to submit form on Enter key press
+      const addUcInput = document.querySelector('#addUcForm input[name="siglaUC"]');
+      addUcInput.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          document.getElementById('addUcForm').submit();
+        }
       });
     });

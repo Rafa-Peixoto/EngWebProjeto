@@ -12,11 +12,11 @@ block content
           form.leave-uc-form(action='/remove-uc', method='POST')
             input(type='hidden', name='siglaUC', value=uc.sigla)
             button.leave-uc-button(type='submit') Sair
-
     hr
-    ul
-      li: a(href=`/ucs/${uc.sigla}/criar-aula`) Criar Aula
-      li: a(href=`/ucs/${uc.sigla}/editar-uc`) Editar UC
-      li: a(href=`/ucs/${uc.sigla}/apagar-uc`) Apagar UC
+    if isOwner
+      ul
+        li: a(href=`/ucs/${uc.sigla}/criar-aula`) Criar Aula
+        li: a(href=`/ucs/${uc.sigla}/editar-uc`) Editar UC
+        li: a(href=`/ucs/${uc.sigla}/apagar-uc`) Apagar UC
   .uc-info
     block innerContent

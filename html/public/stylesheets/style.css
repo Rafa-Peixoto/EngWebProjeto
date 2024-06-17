@@ -22,13 +22,14 @@ body {
     top: 0;
     height: 50px; /* Altura fixa */
 }
-
-.sub-nav {
-    background-color: #36B597; /* Verde claro */
-    top: 50px; /* Alinhado diretamente abaixo da nav-bar sem espaço */
-    height: 50px;
-    justify-content: center;
+.nav-bar, .sub-nav {
+    padding: 5px 20px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
 }
 
 .nav-title {
@@ -37,6 +38,25 @@ body {
     font-weight: bold;
 }
 
+.sub-nav {
+    background-color: #36B597; /* Verde claro */
+    top: 50px; /* Alinhado diretamente abaixo da nav-bar sem espaço */
+    height: 50px;
+    justify-content: space-between; /* Espaço entre elementos */
+    align-items: center;
+}
+
+.sub-nav form {
+    display: flex;
+    align-items: center;
+}
+
+.sub-nav input[type="text"], .sub-nav form input[type="text"] {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+}
 /* Barra de navegação */
 .nav-bar a, .sub-nav a {
     color: white;
@@ -296,222 +316,16 @@ textarea.form-control {
     border: 0;
     border-top: 0px solid #ddd;
 }
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
+/* Estilos específicos para a página de boas-vindas, login e registro */
+/* Estilos específicos para a página de boas-vindas, login e registro */
+/* Estilos específicos para a página de boas-vindas, login e registro */
+.welcome-page {
     height: 100vh;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    background-image: url('/images/entrada-da-universidade-do-minho_661c0d3ecb4f7.jpg');
-    background-size: cover;
-    background-position: center;
-    overflow: hidden;
-}
-
-.background {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    filter: blur(5px);
-    z-index: 1;
-}
-
-.content {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-    text-align: center;
-    color: white;
-}
-
-h1 {
-    font-size: 3em;
-    margin: 0;
-    padding: 0.5em;
-    color: white;
-}
-
-.buttons {
-    display: flex;
     justify-content: center;
-    margin-top: 20px;
-}
-
-button {
-    margin: 0 10px;
-    padding: 15px 30px;
-    font-size: 1.2em;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-.footer {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-    color: white;
-    font-size: 1.2em;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-.welcome-text {
-    position: absolute;
-    top: -300px; /* Posicionamento mais alto */
-    left: 50%;
-    transform: translateX(-50%);
-    color: #32a852; /* Verde médio */
-    font-size: 5em; /* Tamanho maior da fonte */
-    font-weight: bold;
-    z-index: 2;
-    width: 100%;
-    text-align: center;
-}
-
-
-.button-container {
-    position: absolute;
-    top: -300px; /* Ajustado para ficar logo abaixo do texto de boas-vindas */
-    left: 14%;
-    transform: translateX(-50%);
-    background: rgba(255, 255, 255, 0.9);
-    padding: 20px 40px;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    width: auto;
-    z-index: 2;
-}
-
-.button-container a {
-    text-decoration: none;
-}
-
-.button-container button {
-    padding: 15px 30px;
-    font-size: 18px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-    transition: background-color 0.3s;
-}
-
-.button-container button:hover {
-    background-color: #0056b3;
-}
-
-/* Estilo do rodapé */
-.footer {
-    position: fixed;
-    bottom: 10px;
-    width: 100%;
-    text-align: center;
-    color: white;
-    z-index: 1;
-    background: none;
-}
-
-
-/* Botão para voltar */
-.back-button {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: 24px;
-    color: white;
-    background: none;
-    border: none;
-    cursor: pointer;
-    z-index: 2;
-}
-
-/* Ajustes para o container do formulário */
-.container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    align-items: center; /* Centraliza verticalmente */
+    background-color: transparent; /* Transparente para mostrar o background-blur */
     position: relative;
-    z-index: 1;
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-input[type="text"],
-input[type="password"],
-input[type="email"] {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-.error {
-    color: red;
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-/* Rodapé estilizado */
-.footer {
-    position: fixed;
-    bottom: 10px;
-    width: 100%;
-    text-align: center;
-    color: white;
-    z-index: 1;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-
-/* Estilos básicos */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: transparent;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    position: relative;
-    overflow: hidden;
 }
 
 .background-blur {
@@ -523,61 +337,76 @@ body {
     background-image: url('/images/entrada-da-universidade-do-minho_661c0d3ecb4f7.jpg');
     background-size: cover;
     background-position: center;
-    filter: blur(3px);
+    filter: blur(4px); /* Ajuste conforme necessário */
     z-index: 0;
 }
 
 .container {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 400px;
     position: relative;
     z-index: 1;
-}
-
-.footer {
-    position: fixed;
-    bottom: 10px;
-    width: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px 20px;
+    border-radius: 20px;
     text-align: center;
-    color: white;
-    z-index: 1;
-    background: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.back-button {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: 16px;
-    color: white;
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    z-index: 2;
-}
-
-.back-button:hover {
-    text-decoration: underline;
-}
-
-form div {
+.container h1 {
     margin-bottom: 20px;
+    font-size: 2em;
+    text-align: center; /* Centraliza o texto dentro do h1 */
 }
 
-label {
+.container a {
+    text-decoration: none;
+    margin: 10px;
+}
+
+.container button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.container button:hover {
+    background-color: #0056b3;
+}
+/* Estilos específicos para a página de login */
+/* Estilos específicos para a página de login */
+.login-page .login-container {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px 20px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px; /* Ajuste conforme necessário */
+    margin: 100px auto 0; /* Adiciona margem superior para puxar a caixa para baixo */
+}
+
+.login-page .login-container h1 {
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+.login-page .login-container form div {
+    margin-bottom: 15px;
+}
+
+.login-page .login-container label {
     display: block;
     margin-bottom: 5px;
     color: #333;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="email"] {
+.login-page .login-container input[type="text"],
+.login-page .login-container input[type="password"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
@@ -585,30 +414,252 @@ input[type="email"] {
     box-sizing: border-box;
 }
 
-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #007bff;
-    color: white;
+.login-page .login-container button {
+    padding: 10px 20px;
+    font-size: 16px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease;
 }
 
-button:hover {
+.login-page .login-container button:hover {
     background-color: #0056b3;
 }
 
-.error {
-    color: red;
+.login-page .login-container a {
+    display: block;
+    margin-top: 20px;
+    color: #007bff;
+}
+
+.login-page .login-container a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* Estilos específicos para a página de registro */
+.register-page .register-container {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px 20px;
+    border-radius: 20px;
     text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px; /* Ajuste conforme necessário */
+    margin: 60px auto; /* Centraliza horizontalmente e adiciona margem superior */
+}
+
+.register-page .register-container h1 {
+    margin-bottom: 20px;
+    font-size: 2em;
+    text-align: center;;
+}
+
+.register-page .register-container form div {
     margin-bottom: 15px;
 }
 
-h1 {
+.register-page .register-container label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.register-page .register-container input[type="text"],
+.register-page .register-container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.register-page .register-container button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.register-page .register-container button:hover {
+    background-color: #0056b3;
+}
+
+
+/* Estilos para o botão de voltar */
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #0056b3;
+}
+
+/* Ajustes para garantir que o formulário esteja visível em qualquer monitor */
+.form-container {
+    max-width: 800px;
+    margin: 100px auto; /* Reduz o espaço no topo */
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Alinhar os rótulos com o início da respectiva caixa de texto */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    margin-bottom: 0.5rem;
+}
+
+/* Ajuste adicional para campos de texto e textarea */
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+
+
+/* Estilos para a barra lateral */
+.side-nav {
+    position: fixed;
+    top: 100px; /* Ajustado para caber sob as barras de navegação */
+    left: 0;
+    width: 200px;
+    height: calc(100% - 100px); /* Ajuste baseado na altura das barras de navegação */
+    background-color: #36B597;
+    padding: 10px 0;
+    z-index: 999;
+    overflow-y: auto; /* Adicionado para permitir rolagem se necessário */
+}
+
+.side-nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.side-nav li a {
+    color: white;
+    padding: 10px 20px;
+    display: block;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.side-nav li a:hover {
+    background-color: #2a5440;
+}
+
+/* Ajustes para visibilidade dos botões */
+.side-nav li a.button {
+    background-color: #36B597; /* Mesma cor que "Geral", "Aulas" e "Conteúdo" */
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
     text-align: center;
-    color: #32a852;
-    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.side-nav li a.button:hover {
+    background-color: #2a5440;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .side-nav {
+        width: 100%;
+        height: auto;
+        position: relative;
+        top: auto;
+    }
+
+    .side-nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .side-nav li {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .side-nav li a {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+}
+/* Estilos para o botão "Sair" */
+button.leave-uc-button {
+    background-color: #36B597; /* Mesma cor que "Geral", "Aulas" e "Conteúdo" */
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    display: block; /* Garante que o botão ocupe toda a largura disponível */
+    margin: 5px 0; /* Espaçamento entre os botões */
+    text-decoration: none;
+    border: none; /* Remove a borda padrão do botão */
+    cursor: pointer;
+}
+
+button.leave-uc-button:hover {
+    background-color: #2a5440;
+}
+.side-nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.side-nav li {
+    margin-bottom: 10px;
+}
+
+.side-nav li a, .leave-uc-button {
+    background-color: #36B597; /* Mesma cor que "Geral", "Aulas" e "Conteúdo" */
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    display: block; /* Garante que os botões ocupem toda a largura disponível */
+    margin: 5px 20px; /* Ajuste a margem conforme necessário */
+    text-decoration: none;
+}
+
+.side-nav li a:hover, .leave-uc-button:hover {
+    background-color: #2a5440;
 }

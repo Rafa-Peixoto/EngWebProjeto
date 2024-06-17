@@ -116,14 +116,14 @@ router.put('/:id', (req, res) => {
     titulo: req.body.titulo,
     docentes: Array.isArray(req.body.docentes) ? req.body.docentes : (req.body.docentes || '').split(',').map(docente => docente.trim()),
     horario: {
-      teoricas: Array.isArray(req.body.teoricas) ? req.body.teoricas : (req.body.teoricas || '').split(',').map(teorica => teorica.trim()),
-      praticas: Array.isArray(req.body.praticas) ? req.body.praticas : (req.body.praticas || '').split(',').map(pratica => pratica.trim())
+      teoricas: Array.isArray(req.body.horario.teoricas) ? req.body.horario.teoricas : (req.body.horario.teoricas || '').split(',').map(teorica => teorica.trim()),
+      praticas: Array.isArray(req.body.horario.praticas) ? req.body.horario.praticas : (req.body.horario.praticas || '').split(',').map(pratica => pratica.trim())
     },
     avaliacao: Array.isArray(req.body.avaliacao) ? req.body.avaliacao : (req.body.avaliacao || '').split(',').map(avaliacao => avaliacao.trim()),
     datas: {
-      teste: req.body.dataTeste ? new Date(req.body.dataTeste) : null,
-      exame: req.body.dataExame ? new Date(req.body.dataExame) : null,
-      projeto: req.body.dataProjeto ? new Date(req.body.dataProjeto) : null
+      teste: req.body.datas.teste ? new Date(req.body.datas.teste) : null,
+      exame: req.body.datas.exame ? new Date(req.body.datas.exame) : null,
+      projeto: req.body.datas.projeto ? new Date(req.body.datas.projeto) : null,
     }
   };
 

@@ -165,9 +165,12 @@ router.post('/remove-uc', authMiddleware.verificaAcesso, (req, res) => {
 });
 
 router.get('/ucs/:id', authMiddleware.verificaAcesso, (req, res) => {
+  const username = req.user.username;
+
   axios.get(`http://localhost:4200/ucs/${req.params.id}`, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
     .then(dados => {
-      res.render('geral', { uc: dados.data, title: dados.data.titulo });
+      isOwner = (dados.data.owner === username);  
+      res.render('geral', { uc: dados.data, title: dados.data.titulo, isOwner});
     })
     .catch(erro => {
       res.render('error', { error: erro });
@@ -220,11 +223,15 @@ router.post('/ucs', authMiddleware.verificaAcesso, async (req, res) => {
 
 // Rota POST para atualizar uma UC
 router.post('/ucs/:id/editar-uc', authMiddleware.verificaAcesso, (req, res) => {
+  console.log('Iniciando atualização da UC:', req.params.id, 'com dados:', req.body);
+
   const ucData = {
     titulo: req.body.titulo,
     docentes: req.body.docentes.split(',').map(docente => docente.trim()),
-    teoricas: req.body.teoricas.split(',').map(teorica => teorica.trim()),
-    praticas: req.body.praticas.split(',').map(pratica => pratica.trim()),
+    horario: {
+      teoricas: req.body.teoricas.split(',').map(teorica => teorica.trim()),
+      praticas: req.body.praticas.split(',').map(pratica => pratica.trim())
+    },
     avaliacao: req.body.avaliacao.split(',').map(avaliacao => avaliacao.trim()),
     datas: {
       teste: req.body.dataTeste ? new Date(req.body.dataTeste) : null,
@@ -232,14 +239,20 @@ router.post('/ucs/:id/editar-uc', authMiddleware.verificaAcesso, (req, res) => {
       projeto: req.body.dataProjeto ? new Date(req.body.dataProjeto) : null,
     }
   };
+
+  console.log('Enviando dados para API via PUT:', ucData);
+
   axios.put(`http://localhost:4200/ucs/${req.params.id}`, ucData, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
     .then(() => {
+      console.log('Redirecionando após atualização bem-sucedida.');
       res.redirect('/');
     })
     .catch(erro => {
+      console.error('Falha na atualização da UC via Axios:', erro.message);
       res.render('error', { error: erro });
     });
 });
+
 // Rota para deletar uma UC específica (confirmação)
 router.get('/ucs/:id/apagar-uc', authMiddleware.verificaAcesso, (req, res) => {
   axios.get(`http://localhost:4200/ucs/${req.params.id}`, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
@@ -374,6 +387,7 @@ router.get('/ucs/:sigla/editar-uc', authMiddleware.verificaAcesso, (req, res) =>
   axios.get(`http://localhost:4200/ucs/${req.params.sigla}`)
     .then(response => {
       const uc = response.data;
+      console.log('UC:', uc); 
       res.render('editarUC', { title: 'Editar UC', uc: uc });
     })
     .catch(erro => {
