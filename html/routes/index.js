@@ -250,26 +250,5 @@ router.get('/ucs/:sigla/apagar-uc', authMiddleware.verificaAcesso, (req, res) =>
   res.render('apagarUC', { title: 'Apagar UC' });
 });
 
-router.get('/welcome', (req, res) => {
-  res.render('welcomepage', {
-    title: 'Bem-vindo',
-    pageBackgroundClass: 'background-page'
-  });
-});
-
-router.get('/login', (req, res) => {
-  res.render('login', {
-    title: 'Login',
-    pageBackgroundClass: 'background-page'
-  });
-});
-
-router.get('/register', (req, res) => {
-  res.render('register', {
-    title: 'Registo',
-    pageBackgroundClass: 'background-page'
-  });
-});
-
 
 module.exports = router;
