@@ -259,13 +259,12 @@ router.delete('/ucs/:id', authMiddleware.verificaAcesso, (req, res) => {
       res.redirect('/');
     })
     .catch(erro => {
-      console.log('Erro ao apagar a UC: ' + erro);
       res.render('error', { error: erro });
     });
 });
 
 router.get('/ucs/:sigla/geral', authMiddleware.verificaAcesso, (req, res) => {
-  axios.get(`http://localhost:4200/ucs/${req.params.sigla}`, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
+  axios.get(`http://localhost:4200/ucs/${req.params.sigla}`)
     .then(dados => res.render('geral', { uc: dados.data, title: dados.data.titulo }))
     .catch(erro => res.render('error', { error: erro }));
 });
@@ -315,7 +314,7 @@ router.get('/ucs/:ucSigla/conteudo', authMiddleware.verificaAcesso, async (req, 
 });
 
 router.get('/ucs/:sigla/criar-aula', authMiddleware.verificaAcesso, (req, res) => {
-  axios.get(`http://localhost:4200/ucs/${req.params.sigla}`, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
+  axios.get(`http://localhost:4200/ucs/${req.params.sigla}`)
     .then(response => {
       const uc = response.data;
       res.render('criarAula', { title: 'Criar Aula', uc: uc });
@@ -360,7 +359,7 @@ router.post('/ucs/:sigla/aulas/:aulaId/delete', authMiddleware.verificaAcesso, a
 
 
 router.get('/ucs/:sigla/eliminar-aula/:aulaId', authMiddleware.verificaAcesso, (req, res) => {
-  axios.get(`http://localhost:4200/ucs/${req.params.sigla}/aulas/${req.params.aulaId}`, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
+  axios.get(`http://localhost:4200/ucs/${req.params.sigla}/aulas/${req.params.aulaId}`)
     .then(response => {
       const aula = response.data;
       res.render('eliminarAula', { title: 'Eliminar Aula', aula: aula });
@@ -372,7 +371,7 @@ router.get('/ucs/:sigla/eliminar-aula/:aulaId', authMiddleware.verificaAcesso, (
 });
 
 router.get('/ucs/:sigla/editar-uc', authMiddleware.verificaAcesso, (req, res) => {
-  axios.get(`http://localhost:4200/ucs/${req.params.sigla}`, { headers: { 'Authorization': `Bearer ${req.cookies.token}` } })
+  axios.get(`http://localhost:4200/ucs/${req.params.sigla}`)
     .then(response => {
       const uc = response.data;
       res.render('editarUC', { title: 'Editar UC', uc: uc });

@@ -3,6 +3,16 @@ html
   head
     title Welcome Page
     link(rel="stylesheet", href="/stylesheets/style.css")
+  body
+    .background-container
+    .welcome-text Bem-vindo
+    .button-container
+      a(href="/welcome/login")
+        button Iniciar Sessão
+      a(href="/welcome/register")
+        button Registrar
+    .footer Treble com o Mourinho
+
     style.
       body {
         font-family: Arial, sans-serif;
@@ -12,44 +22,66 @@ html
         justify-content: center;
         align-items: center;
         height: 100vh;
-        background-image: url('/images/background.jpg');
+        background-color: #000;
+        overflow: hidden;
+        flex-direction: column;
+      }
+      .background-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('/images/entrada-da-universidade-do-minho_661c0d3ecb4f7.jpg'); /* Certifique-se de que o caminho está correto */
         background-size: cover;
         background-position: center;
-        filter: blur(5px); /* Embaça o fundo */
+        filter: blur(5px); /* Adiciona um pequeno desfoque à imagem de fundo */
+        z-index: 0;
       }
-      .container {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(255, 255, 255, 0.8);
-        padding: 20px;
+      .welcome-text {
+        position: relative;
+        color: #32a852; /* Um verde um pouco mais escuro */
+        font-size: 4.5em; /* Aumenta o tamanho da fonte */
+        font-weight: bold; /* Faz o texto ficar em negrito */
+        z-index: 1;
+        margin-top: 5%; /* Menor margem superior para posicionar mais alto na página */
+        width: 100%; /* Garante que a largura total seja utilizada */
+        text-align: center; /* Centraliza o texto */
+      }
+      .button-container {
+        position: relative;
+        background: rgba(255, 255, 255, 0.9); /* Fundo branco semitransparente para o container */
+        padding: 20px 40px;
         border-radius: 10px;
         text-align: center;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+        gap: 20px; /* Espaço entre os botões */
+        margin-top: 2%; /* Ajusta a margem superior para trazer os botões logo abaixo do texto de boas-vindas */
       }
-      .container h1 {
-        margin-bottom: 20px;
-      }
-      .container a {
+      .button-container a {
         text-decoration: none;
-        margin: 10px;
+        margin: 15px;
       }
-      .container button {
-        padding: 10px 20px;
-        font-size: 16px;
+      .button-container button {
+        padding: 15px 30px;
+        font-size: 18px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
         background-color: #007bff;
         color: white;
+        transition: background-color 0.3s ease;
       }
-      .container button:hover {
+      .button-container button:hover {
         background-color: #0056b3;
       }
-  body
-    .container
-      h1 Welcome to Our Application
-      a(href="/welcome/login")
-        button Login
-      a(href="/welcome/register")
-        button Register
+      .footer {
+        position: absolute;
+        bottom: 10px;
+        width: 100%;
+        text-align: center;
+        color: white;
+        z-index: 1;
+      }

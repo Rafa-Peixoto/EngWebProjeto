@@ -8,6 +8,8 @@ block content
     if userLevel >= 2
       a(href="/criar")
         i.fas.fa-plus Criar UC
+
+  .sub-nav-lower
     form#addUcForm(method='POST', action='/add-uc')
       input(type='text', name='siglaUC', placeholder='Digite a sigla da UC', required=true)
       button(type='submit') Adicionar UC
@@ -24,7 +26,7 @@ block content
       const searchInput = document.querySelector('.sub-nav input[type="text"]');
       const ucsCards = document.querySelectorAll('.uc-card');
     
-      searchId.addEventListener('input', function() {
+      searchInput.addEventListener('input', function() {
         const searchTerm = this.value.toLowerCase();
         ucsCards.forEach(card => {
           const title = card.querySelector('h2').textContent.toLowerCase();
