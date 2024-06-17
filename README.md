@@ -1,3 +1,8 @@
+
+
+
+
+
 ## Estrutura do Projeto
 
 O projeto é uma aplicação web completa que integra várias partes para fornecer um sistema de gestão de Unidades Curriculares (UCs). A aplicação é composta por três componentes principais: API, Autenticação e Interface de Utilizador. Abaixo, encontra-se uma visão detalhada:
@@ -13,7 +18,7 @@ O projeto é uma aplicação web completa que integra várias partes para fornec
     │   │   └── ucs.js
     │   ├── app.js
     │   ├── package-lock.json
-    │   ├── package.json
+    │   └── package.json
     ├── auth
     │   ├── bin
     │   │   └── www
