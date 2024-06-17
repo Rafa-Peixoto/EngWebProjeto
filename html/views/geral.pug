@@ -7,12 +7,15 @@ block innerContent
   p #{uc.avaliacao}
   h3 Datas:
   .aulas-container
-    .aula-card
-      h3 Teste
-      p= uc.datas.teste || '???'
-    .aula-card
-      h3 Exame
-      p= uc.datas.exame || '???'
-    .aula-card
-      h3 Projeto
-      p= uc.datas.projeto || '???'
+    if uc.datas
+      .aula-card
+        h3 Teste
+        p= uc.datas.teste || '???'
+      .aula-card
+        h3 Exame
+        p= uc.datas.exame || '???'
+      .aula-card
+        h3 Projeto
+        p= uc.datas.projeto || '???'
+    else
+      p Nenhuma data disponível
